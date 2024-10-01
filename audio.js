@@ -30,7 +30,7 @@
 
         // Function to check if audio can be played today
         function canPlayAudioToday() {
-            const today = new Date().toISOString().split('T')[1]; // Get current date in YYYY-MM-DD format
+            const today = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
             const lastPlayed = localStorage.getItem('lastAudioPlayDate');
             return today !== lastPlayed; // Returns true if audio hasn't been played today
         }
@@ -44,7 +44,7 @@
                 const audioElement = document.getElementById("movieAudio");
                 audioElement.play().then(() => {
                     audioPlayed = true; // Set flag to true so audio won't play again
-                    localStorage.setItem('lastAudioPlayDate', new Date().toISOString().split('T')[1]); // Store the date
+                    localStorage.setItem('lastAudioPlayDate', new Date().toISOString().split('T')[0]); // Store the date
                 }).catch((error) => {
                     console.log("Audio playback failed:", error);
                 });
