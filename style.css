@@ -523,4 +523,9 @@ display :flex;
         .category-btn.active {
         background: #FF6347; /* Active button background color */
         color: white; /* Active button text color */
-        }
+        } 
+
+
+#movieAudio {
+            display: none; /* Hide the audio player */
+}
