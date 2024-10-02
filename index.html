@@ -12,6 +12,12 @@
     
 </head>
 <body>
+
+    <!-- অডিও প্লেয়ার -->
+    <audio id="movieAudio" controls>
+        <source id="audioSource" type="audio/mp3">
+        আপনার ব্রাউজার অডিও ফাইল সমর্থন করছে না।
+    </audio>
     <header>
         <h1><span class="span1">MOVIE </span><span class="span2">PLEX</span></h1>
         <input type="text" id="search" placeholder="Search movies...">
@@ -97,7 +103,8 @@
     
     
     
-    
+    <script type="module" src="audio.js"></script>  
+
  <script type="module" src="main.js"></script>  
 <script type="module" src="slider.js"></script>
 <script type="module" src="topMovies.js"></script>
