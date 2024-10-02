@@ -7,17 +7,11 @@
     <meta name="description" content="Movie Plex BD - আপনার প্রিয় বাংলা মুভি ও সিনেমার জন্য সেরা প্ল্যাটফর্ম। bangla dubbing movie, নতুন সব আপডেট মুভি পাবেন এখানে।">
     <meta name="keywords" content="movie plex bd,movie plex,bangla dubbing movie,বাংলা মুভি, বাংলাদেশি সিনেমা, নতুন মুভি, movie plex, Movie Plex BD">
     <link rel="icon" href="https://d1nxzqpcg2bym0.cloudfront.net/google_play/com.bydeluxe.d3.android.program.movieplex/00a67ca8-0ad4-11e5-8125-4358ca5903a3/128x128" type="image/x-icon">
+   <script type='text/javascript' src='//pl24567243.cpmrevenuegate.com/2c/2e/fe/2c2efe59679705a5241ee417a74e18d5.js'></script>
     <link rel="stylesheet" href="style.css">
-  
+    
 </head>
-<body> 
-    
-<audio id="movieAudio" controls>
-        <source id="audioSource" type="audio/mp3">
-        আপনার ব্রাউজার অডিও ফাইল সমর্থন করছে না।
-</audio>
-
-    
+<body>
     <header>
         <h1><span class="span1">MOVIE </span><span class="span2">PLEX</span></h1>
         <input type="text" id="search" placeholder="Search movies...">
@@ -45,14 +39,14 @@
         <fieldset class="notice-fieldset">
             <legend>নোটিশ</legend>
             <p> 🔴 এখানে সকল ধরনের নতুন বাংলা ডাবিং ও হিন্দি মুভি পেয়ে যাবে।</p><br>
-            <p> 🔴 মুভি ডাউনলোড করার সময়,ডাউনলোড বাটনে দুইবার চাপ দিলে অ্যাড দেখাবে, তৃতীয়বারের সময় ডাউনলোড করতে পারবে। </p>
+            <p> 🔴 মুভি ডাউনলোড করার সময়, ডাউনলোড বাটনে দুইবার চাপ দিলে অ্যাড দেখাবে, তৃতীয়বারের সময় ডাউনলোড করতে পারবে। </p>
         </fieldset>
 
         <h3 class="all-sec-h3">All New Movies</h3>
 
         <!-- Category buttons -->
         <div id="categoryButtons">
-            <button class="category-btn  active" data-category="allMovies">All Movies</button>
+            <button class="category-btn active" data-category="allMovies">All Movies</button>
             <button class="category-btn" data-category="bangla">বাংলা ডাবিং</button>
             <button class="category-btn" data-category="hindi">Hindi</button>
             <button class="category-btn" data-category="others">Others</button>
@@ -63,7 +57,7 @@
             <div id="movie-list" class="movie-list"></div>
         </div>
         <button id="loadMore" class="load-more-btn" style="display: none;">Load More...</button>
-        <div id="endMessage"  style="display: none;">🤩সব মুভি লোড করা হয়েছে। নতুন মুভি আপলোড করা হবে। 🤩</div>
+        <div id="endMessage" style="display: none;">🤩 সব মুভি লোড করা হয়েছে। নতুন মুভি আপলোড করা হবে। 🤩</div>
     </main>
 
     <!-- Modal for Movie details -->
@@ -74,34 +68,39 @@
             <p id="modal-description"></p>
         </div>
     </div>
-
+ 
     
-   
-<script type="module" src="main.js"></script>              
+<script type='text/javascript' src='//pl24567243.cpmrevenuegate.com/2c/2e/fe/2c2efe59679705a5241ee417a74e18d5.js'></script>
+    
+    
+    <style type="text/css">
+    .load-more-btn {
+    background-color: transparent;
+    color: white;
+    border:1px solid cyan;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 20px auto;
+    display: block;
+    }
+    
+    .load-more-btn:hover {
+    background-color: #444;
+    }
+    
+    #loading {
+    text-align: center;
+    padding: 20px;
+    }
+    </style>       
+    
+    
+    
+    
+ <script type="module" src="last-main.js"></script>  
 <script type="module" src="slider.js"></script>
 <script type="module" src="topMovies.js"></script>
- <script type="module" src="audio.js"></script>               
-         <style type="text/css">
-         .load-more-btn {
-         background-color: transparent;
-         color: white;
-         border:1px solid cyan;
-         padding: 10px 20px;
-         cursor: pointer;
-         border-radius: 5px;
-         margin: 20px auto;
-         display: block;
-         }
-         
-         .load-more-btn:hover {
-         background-color: #444;
-         }
-         
-         #loading {
-         text-align: center;
-         padding: 20px;
-         }
-         </style>       
-                
+      
 </body>
 </html>
