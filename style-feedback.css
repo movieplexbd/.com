@@ -1,0 +1,61 @@
+.containerss {
+      background-color: #1e1e1e;
+      padding:7px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+      max-width: 400px;
+      width: 100%;
+      color: #fff;
+      
+      text-align:center:
+      
+    }
+    h4 {
+      text-align: center;
+      color: #ffcc00;
+    }
+    #feedbackForm {
+      display: flex;
+      align-items: center;
+    }
+    textarea {
+      width: 80%;
+      
+     
+      border: 1px solid #444;
+      border-radius: 5px;
+      background-color: #555;
+      color: #fff;
+      font-size: 16px;
+      resize: vertical;
+    }
+   .buttons{
+      width: 20%;
+      padding: 10px;
+      background-color:tomato;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 10px;
+      transition: background-color 0.3s ease;
+    }
+   .buttons:hover {
+      background-color: #ddd;
+    }
+   .buttons i {
+      margin-left: 8px;
+    }
+    #message {
+      margin-top: 10px;
+      text-align: center;
+      color: #ffcc00;
+    }
+    textarea:focus,.buttons:focus {
+      outline: none;
+      border-color: #ffcc00;
+    }
