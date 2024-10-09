@@ -529,3 +529,31 @@ display :flex;
 #movieAudio {
             display: none; /* Hide the audio player */
 }
+
+   .movie-card::before {
+    content: attr(data-category); /* ডাইনামিক ক্যাটাগরি শো করবে */
+    color: white; /* টেক্সটের রং সাদা */
+    background-color: #3b5998; /* ডিফল্ট ব্যাকগ্রাউন্ড */
+    border-radius: 5px 5px 0px 5px;
+    font-size: 0.9rem;
+    padding: 5px 10px;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+     /* এটি যেন মুভি ইমেজের উপরে থাকে */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* আলাদা ক্যাটাগরির জন্য আলাদা ব্যাকগ্রাউন্ড */
+.movie-card[data-category="bangla"]::before {
+    background-color: #E74C3C; /* বাংলা ডাবিং এর জন্য টমেটো রঙ */
+}
+
+.movie-card[data-category="hindi"]::before {
+    background-color: #3498DB; /* হিন্দি মুভির জন্য নীল রঙ */
+}
+
+.movie-card[data-category="others"]::before {
+    background-color: #2ECC71; /* অন্যান্য মুভির জন্য সবুজ রঙ */
+}         
