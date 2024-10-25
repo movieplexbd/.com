@@ -1,0 +1,568 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    padding: 0;
+    margin: 0;
+}
+
+header {
+
+    background-color: #333;
+    display :flex;
+    
+   
+    padding: 10px;
+    text-align: center;
+    color: #fff;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+header h1 {
+    margin-bottom: 5px;
+    font-family: 'Helvetica', sans-serif;
+    font-size:1.7rem;
+}
+
+nav {
+    margin: 10px auto;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+nav a {
+    color: #e0e0e0;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+nav a:hover {
+    background-color: #555;
+}
+
+main {
+    margin-top: 10px; /* Adjusted to account for fixed header */
+}
+
+.all-sec-h3 {
+    margin: 12px;
+    font-size: 1.5rem;
+}
+
+.all-sec-h3::before {
+    content: "";
+    padding: 2px;
+    background: red;
+    margin-right: 7px;
+}
+
+
+.notice-fieldset{
+margin:10px;
+padding:7px;
+border-radius :5px;
+
+
+}
+
+
+.main-div{
+display :flex;
+
+
+}
+.movie-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 0 5px;
+    
+}
+
+.movie-card {
+    background-color: #2a2a2a;
+    padding: 5px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+    width: 49%;
+    align-items: center;
+    box-sizing: border-box;
+    margin: 10px 0;
+    position: relative;
+    transition: all 0.3s ease;
+    border: 1px solid grey;
+}
+
+.movie-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+.movie-card img {
+    width: 100%;
+    height: 210px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 0.5px solid #444;
+}
+
+.movie-info {
+    width: 100%;
+    padding: 5px;
+    color: #e0e0e0;
+}
+
+.movie-info h5 {
+    font-size: 1em;
+    margin-bottom: 5px;
+}
+
+.movie-info p {
+    margin-top: 0;
+}
+
+.movie-info a {
+    color: #fff;
+    text-decoration: none;
+    background: tomato;
+    padding: 5px;
+    border-radius: 10px;
+    display: inline-block;
+    margin-top: 5px;
+    text-align: center;
+    width: 100%;
+}
+
+
+
+#loading {
+    text-align: center;
+    font-size: 1.5em;
+    margin-top: 20px;
+}
+
+
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+    background-color: #2a2a2a;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    color: #e0e0e0;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    color: #fff;
+}
+
+#search {
+    padding:6.3px;
+    border: 1px solid tomato;
+    border-radius: 5px;
+    text-decoration:none;
+   position:absolute ;
+   right:10px;
+    margin: 0 auo;
+    display: block;
+    background-color: #333;
+    color: #e0e0e0;
+    outline: none;
+}
+#search:hover{
+
+background:#888;
+}
+
+#prev,
+#next {
+    padding: 10px;
+    background: transparent;
+    margin-bottom: 60px;
+    color: #fff;
+    outline: none;
+    border: 1px solid cyan;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#prev {
+    float: left;
+    margin-left: 60px;
+}
+
+#next {
+    float: right;
+    margin-right: 60px;
+}
+
+#prev:hover,
+#next:hover {
+    background: grey;
+}
+
+.span1 {
+    background: red;
+}
+
+.span2 {
+    border: 1.7px solid teal;
+}
+
+#modal-title,
+#modal-description {
+    width: 100%;
+    background: grey;
+    box-sizing: border-box;
+    overflow: auto;
+    padding: 5px;
+}
+
+.marquee-wrapper {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #333;
+    border-top: 2px solid #ff6347;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    height: 40px;
+}
+
+.marquee-content {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    color: #ddd;
+    font-size: 1em;
+    font-weight: 500;
+    animation: marquee 15s linear infinite;
+    padding: 0 20px;
+    justify-content: center;
+    margin-top: 4px;
+}
+
+.marquee-content span {
+    margin-right: 50px;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+/* Slider Styles */
+.slider-container {
+    position: relative;
+    width: 94%;
+    height: 170px;
+    overflow: hidden;
+    margin: 80px 4px 4px 10px;
+    background-color: #333;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.slider-wrapper {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 100%;
+    height: 100%;
+}
+
+.slide {
+    min-width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.slide-info {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.nav-button {
+    position: absolute;
+    top: 50%;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transform: translateY(-50%);
+    display: none;
+}
+
+.prev-button {
+    left: 10px;
+}
+
+.next-button {
+    right: 10px;
+}
+
+.dots-container {
+    text-align: center;
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+}
+
+.dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.active-dot {
+    background-color: #717171;
+}
+
+/* Top Movies Carousel Styles */
+.container3 {
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+.h3 {
+    margin-bottom: 20px;
+}
+
+.h3::before {
+    content: "️";
+    background: red;
+    padding: 2px;
+    margin-right: 5px;
+}
+
+.movies-container3 {
+    display: flex;
+    overflow: hidden; /* Hide the scrollbar */
+    position: relative;
+}
+
+.movie-card3 {
+    height: 175px;
+    width: 102px;
+    background-color: #333;
+    border-radius: 8px;
+    border: 1px solid grey;
+    padding: 3px;
+    margin: 2px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; /* Prevent shrinking */
+    transition: transform 0.5s ease-in-out;
+}
+
+.movie-card3 img {
+    width: 100px;
+    height: 140px; /* Adjusted to fit within 200px height */
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.movie-card3 .card-body {
+    text-align: center;
+    padding-top: 5px;
+}
+
+.movie-card3 .card-body h3 {
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+}
+
+.movie-card3 .card-body a {
+    display: inline-block;
+    color: #fff;
+    background-color: transparent;
+    border: 0.3px solid cyan;
+    border-radius: 5px;
+    text-decoration: none;
+    padding: 5px;
+    margin-top: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.movie-card3 .card-body a:hover {
+    background-color: #0056b3;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    font-size: 30px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    position: absolute;
+    display: none;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 1;
+}
+
+.carousel-control-prev {
+    left: 10px;
+}
+
+.carousel-control-next {
+    right: 10px;
+}
+
+
+//Category button
+.load-more-btn {
+            background-color: transparent;
+            color: white;
+            border:1px solid cyan;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 20px auto;
+            display: block;
+        }
+
+      .load-more-btn:hover {
+            background-color: #444;
+        }
+
+        #loading {
+            text-align: center;
+            padding: 20px;
+        }
+
+        #endMessage,.endMessage{
+            text-align: center;
+            font-size: 16px;
+            color:#ddd;
+            padding:7px;
+            background :#333;
+            
+        }
+
+        #categoryButtons {
+            background: #444;
+            padding: 10px;
+            margin: 7px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .category-btn {
+            padding: 5px;
+            border: 1px solid tomato;
+            border-radius: 10px;
+            width: 30%;
+            background: #555;
+            color: #ddd;
+            font-weight: 700;
+            font-size: 13px;
+            margin: 1px;
+            cursor: pointer;
+        }
+
+        
+        .category-btn.active {
+        background: #FF6347; /* Active button background color */
+        color: white; /* Active button text color */
+        } 
+
+
+#movieAudio {
+            display: none; /* Hide the audio player */
+}
+
+   .movie-card::before {
+    content: attr(data-category); /* ডাইনামিক ক্যাটাগরি শো করবে */
+    color: white; /* টেক্সটের রং সাদা */
+    background-color: #3b5998; /* ডিফল্ট ব্যাকগ্রাউন্ড */
+    border-radius: 5px 5px 0px 5px;
+    font-size: 0.9rem;
+    padding: 5px 10px;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+     /* এটি যেন মুভি ইমেজের উপরে থাকে */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* আলাদা ক্যাটাগরির জন্য আলাদা ব্যাকগ্রাউন্ড */
+.movie-card[data-category="bangla"]::before {
+    background-color: #E74C3C; /* বাংলা ডাবিং এর জন্য টমেটো রঙ */
+}
+
+.movie-card[data-category="hindi"]::before {
+    background-color: #3498DB; /* হিন্দি মুভির জন্য নীল রঙ */
+}
+
+.movie-card[data-category="others"]::before {
+    background-color: #2ECC71; /* অন্যান্য মুভির জন্য সবুজ রঙ */
+}         

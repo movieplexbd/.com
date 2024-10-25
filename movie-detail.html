@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Details</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> <!-- Font Awesome CDN -->
+    <script type='text/javascript' src='//pl24567243.cpmrevenuegate.com/2c/2e/fe/2c2efe59679705a5241ee417a74e18d5.js'></script>
+    </head>
+<body>
+    <header>
+        <a href="index.html" class="back-button"><i class="fas fa-arrow-left"></i> Back</a>
+        <h1>Movie Details</h1>
+    </header>
+
+    <main id="movie-detail-container">
+        <!-- Movie details will be inserted here -->
+        <script type='text/javascript' src='//pl24567243.cpmrevenuegate.com/2c/2e/fe/2c2efe59679705a5241ee417a74e18d5.js'></script>
+    </main>
+<script async="async" data-cfasync="false" src="//pl24579978.cpmrevenuegate.com/4d1f4910dba090b1bca9f9854eff9f28/invoke.js"></script>
+<div id="container-4d1f4910dba090b1bca9f9854eff9f28"></div>
+
+    <style type="text/css">
+        /* Styles for header */
+        header {
+            display: flex; /* Flexbox layout */
+            align-items: center; /* Center items vertically */
+            justify-content: space-between; /* Space between title and back button */
+            background-color: #555; /* Header background */
+            padding: 20px; /* Header padding */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Header shadow */
+        }
+
+        header h1 {
+            margin: 0; /* No margin for header title */
+            font-size:1.3em; /* Title font size */
+            color: #ddd; /* Title color */
+        }
+
+        .back-button {
+            color: #ddd; /* Back button text color */
+            text-decoration: none; /* No underline */
+            font-size: 1.2em; /* Font size */
+            transition: color 0.3s; /* Color transition */
+        }
+
+        .back-button:hover {
+            color: #ffe600; /* Color change on hover */
+        }
+
+        /* Rest of your styles here */
+        body {
+            font-family: 'Arial', sans-serif; /* Font style */
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a; /* Dark background */
+            color: #ffffff; /* White text */
+        }
+
+        #movie-detail-container {
+            padding: 20px; /* Padding for container */
+            max-width: 800px; /* Max width */
+            margin: auto; /* Center align */
+        }
+
+        .movie-detail-card {
+            background-color: #2c2c2c; /* Dark background for card */
+            border-radius: 10px; /* Rounded corners */
+            padding: 20px; /* Padding */
+            text-align: center; /* Center text */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Shadow effect */
+            margin-bottom: 20px; /* Space between cards */
+            margin-top:85px;
+        }
+
+        .movie-detail-card img {
+            width: 100%; /* Full width */
+            height: 400px; /* Fixed height */
+            object-fit: cover; /* Maintain aspect ratio */
+            border-radius: 10px; /* Rounded corners */
+            margin-bottom: 15px; /* Space below image */
+        }
+
+        .movie-detail-card h2 {
+            font-size: 2em; /* Large font size */
+            margin: 10px 0; /* Margin */
+            color: #72DFE0; /* Red color for title */
+        }
+
+        .movie-detail-card p {
+            font-size: 1.2em; /* Medium font size */
+            margin: 10px 0; /* Margin */
+            line-height: 1.5; /* Increased line height */
+            border:1px solid #888;
+        }
+
+        .download-button {
+            display: inline-block; /* Align as block */
+            padding: 10px 25px; /* Padding for button */
+            background-color:#72DFE0; /* Red background */
+            color: #444; /* White text */
+            border: none; /* No border */
+            border-radius: 5px; /* Rounded corners */
+            text-decoration: none; /* No underline */
+            font-size: 1.1em; /* Font size */
+            transition: background-color 0.3s; /* Transition effect */
+        }
+
+        .download-button:hover {
+            background-color: #ddd; /* Darker red on hover */
+        }
+
+        /* Additional responsive design */
+        @media (max-width: 600px) {
+            #movie-detail-container {
+                padding: 10px; /* Smaller padding */
+            }
+
+            .movie-detail-card h2 {
+                font-size: 1.8em; /* Smaller font size on mobile */
+            }
+
+            .movie-detail-card p {
+                font-size: 1em; /* Smaller font size on mobile */
+            }
+
+            .download-button {
+                font-size: 1em; /* Smaller button text */
+            }
+        }
+    </style>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBsz-82MDaibWnIBUpoykrZHyJW7UMedX8",
+            authDomain: "movies-bee24.firebaseapp.com",
+            databaseURL: "https://movies-bee24-default-rtdb.firebaseio.com",
+            projectId: "movies-bee24",
+            storageBucket: "movies-bee24.appspot.com",
+            messagingSenderId: "1080659811750",
+            appId: "1:1080659811750:web:c1ef7d4dacc3ab17edc367"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        
+        let clickCount = 0; // To count the number of clicks
+
+        // Function to get movie details
+        function getMovieDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const movieName = urlParams.get('name');
+
+            const moviesRef = ref(db, 'movies');
+            onValue(moviesRef, (snapshot) => {
+                snapshot.forEach((childSnapshot) => {
+                    const movie = childSnapshot.val();
+                    if (movie.name === decodeURIComponent(movieName)) {
+                        renderMovieDetails(movie);
+                    }
+                });
+            });
+        }
+
+        // Render movie details
+        function renderMovieDetails(movie) {
+            const container = document.getElementById('movie-detail-container');
+            container.innerHTML = `
+                <div class="movie-detail-card">
+                    <img src="${movie.fileURL}" alt="${movie.name}">
+                    <h2>${movie.name}</h2>
+                    <p><strong>Year:</strong> ${movie.year}</p>
+                    <p><strong>Description:</strong> ${movie.description}</p>
+                    <a href="#" class="download-button" id="download-link">Download Movie</a>
+                </div>
+            `;
+
+            // Adding click event listener for download button
+            const downloadButton = document.getElementById('download-link');
+            downloadButton.addEventListener('click', (event) => {
+                event.preventDefault(); // Prevent default anchor behavior
+                clickCount++; // Increment click count
+                if (clickCount < 3) {
+                    // First two clicks show ad link
+                    window.open(movie.adLink, '_blank'); // Open ad link in new tab
+                } else {
+                    // Third click shows actual download link
+                    window.location.href = movie.downloadLink; // Redirect to download link
+                }
+            });
+        }
+
+        // Load movie details on page load
+        getMovieDetails();
+    </script>
+</body>
+</html>

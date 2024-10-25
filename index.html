@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Plex BD - বাংলা মুভি, bangla dibbing movie, বাংলা সব ডাবিং মুভি।</title>
+    <meta name="description" content="Movie Plex BD - আপনার প্রিয় বাংলা মুভি ও সিনেমার জন্য সেরা প্ল্যাটফর্ম। bangla dubbing movie, নতুন সব আপডেট মুভি পাবেন এখানে।">
+    <meta name="keywords" content="movie plex bd,movie plex,bangla dubbing movie,বাংলা মুভি, বাংলাদেশি সিনেমা, নতুন মুভি, movie plex, Movie Plex BD">
+    <link rel="icon" href="https://d1nxzqpcg2bym0.cloudfront.net/google_play/com.bydeluxe.d3.android.program.movieplex/00a67ca8-0ad4-11e5-8125-4358ca5903a3/128x128" type="image/x-icon">
+   <script type='text/javascript' src='//pl24567243.cpmrevenuegate.com/2c/2e/fe/2c2efe59679705a5241ee417a74e18d5.js'></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="style-feedback.css">
+    
+
+</head>
+<body>
+
+    <!-- অডিও প্লেয়ার -->
+    <audio id="movieAudio" controls>
+        <source id="audioSource" type="audio/mp3">
+        আপনার ব্রাউজার অডিও ফাইল সমর্থন করছে না।
+    </audio>
+    <header>
+        <h1><span class="span1">MOVIE </span><span class="span2">PLEX</span></h1>
+        <a href="final-search.html" id="search" >search</a>
+    </header>
+
+    <section>
+        <div class="slider-container">
+            <div class="slider-wrapper" id="slider"></div>
+            <button class="nav-button prev-button" id="prevs">&#10094;</button>
+            <button class="nav-button next-button" id="nexts">&#10095;</button>
+            <div class="dots-container" id="dots"></div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container3">
+            <h2 class="h3">Top Movies</h2>
+            <div id="topMoviesCarousel" class="movies-container3"></div>
+            <button class="carousel-control-prev" id="prevBtn">&#8249;</button>
+            <button class="carousel-control-next" id="nextBtn">&#8250;</button>
+        </div>
+    </section>
+
+    <main>
+        <fieldset class="notice-fieldset">
+            <legend>নোটিশ</legend>
+            <p> 🔴 এখানে সকল ধরনের নতুন বাংলা ডাবিং ও হিন্দি মুভি পেয়ে যাবে।</p><br>
+            <p> 🔴 মুভি ডাউনলোড করার সময়, ডাউনলোড বাটনে দুইবার চাপ দিলে অ্যাড দেখাবে, তৃতীয়বারের সময় ডাউনলোড করতে পারবে। </p>
+        </fieldset>
+
+<!---income notice --->
+
+<div style="background-color: #1e1e1e; border: 1px solid #0084ff; padding: 15px; border-radius: 10px; max-width: 400px; margin: 10px 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+    <h2 style="color: #00aaff; text-align: center; font-family: 'Arial', sans-serif; font-weight: bold; font-size: 20px;">সতর্কতা </h2>
+    <p style="color: #ddd; font-size: 16px; line-height: 1.6; text-align: center; font-family: 'Arial', sans-serif;">
+    
+
+
+আমাদের ওয়েবসাইট সবসময় পেতে,গুগল এ সার্চ করুন <strong  style="color:tomato">movieplexbd.netlify.app</strong> সেম ভাবে সার্চ না করলে গুগল সার্চে আমাদের ওয়েবসাইটে পাবেন না। তাই সেমভাবে লেখে সার্চ করবেন। পরবর্তীতে মনে না থাকলে স্ক্রিনশট নিয়ে রাখুন । </div>
+
+
+        
+<!---feedback --->
+        <div class="opinion">
+  <div class="containerss">
+    <h4>আপনার মতামত আমাদের জানান</h4>
+
+    <form id="feedbackForm">
+      <textarea id="feedback" placeholder="Write your feedback" required></textarea>
+      <button class="buttons" type="submit">Send <i class="fas fa-paper-plane"></i></button>
+    </form>
+
+    <p id="messagess"></p>
+  </div>
+</div>
+  
+
+
+        
+
+        <h3 class="all-sec-h3">All New Movies</h3>
+
+        <!-- Category buttons -->
+        <div id="categoryButtons">
+            <button class="category-btn active" data-category="allMovies">All Movies</button>
+            <button class="category-btn" data-category="bangla">বাংলা ডাবিং</button>
+            <button class="category-btn" data-category="hindi">Hindi</button>
+            <button class="category-btn" data-category="others">Others</button>
+        </div>
+        
+        <div id="loading">Loading movies...</div>
+        <div class="main-div">
+            <div id="movie-list" class="movie-list"></div>
+        </div>
+        <button id="loadMore" class="load-more-btn" style="display: none;">Load More...</button>
+        <div id="endMessage" style="display: none;">🤩 সব মুভি লোড করা হয়েছে। নতুন মুভি আপলোড করা হবে। 🤩</div>
+    </main>
+
+    <!-- Modal for Movie details -->
+    <div id="movie-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="modal-title"></h2>
+            <p id="modal-description"></p>
+        </div>
+    </div>
+ 
+    
+<script type='text/javascript' src='//pl24567243.cpmrevenuegate.com/2c/2e/fe/2c2efe59679705a5241ee417a74e18d5.js'></script>
+    
+    
+    <style type="text/css">
+    .load-more-btn {
+    background-color: transparent;
+    color: white;
+    border:1px solid cyan;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 20px auto;
+    display: block;
+    }
+    
+    .load-more-btn:hover {
+    background-color: #444;
+    }
+    
+    #loading {
+    text-align: center;
+    padding: 20px;
+    }
+    </style>       
+    
+    
+    
+    <script type="module" src="audio.js"></script>  
+
+ <script type="module" src="mainV2.js"></script>  
+<script type="module" src="slider.js"></script>
+<script type="module" src="topMovies.js"></script>
+  <script type="module" src="feedback.js"> </script>
+<script type="module" src="userCount.js"> </script>
+
+      
+</body>
+</html>

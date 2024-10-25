@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Library</title>
+    
+    <style type="text/css">
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #777;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 2px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #777;
+            padding:10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        h3{
+            text-align: center;
+            color: #ddd;
+            margin:5px;
+           
+        }
+
+        .search-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom:4px;
+        }
+
+        input[type="text"] {
+            width: 80%;
+            padding: 12px;
+            border: 1px solid tomato;
+            border-radius: 10px;
+            background-color: #333;
+            color: #fff;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #bb86fc;
+            outline: none;
+        }
+
+        button {
+            padding: 12px 10px;
+            margin: 7px;
+            background-color: tomato;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #9b6fdd;
+        }
+
+        .movie-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .movie-card {
+            background-color: #888;
+            border: 1px solid tomato;
+            border-radius: 5px;
+            width: calc(48% - 10px);
+            margin:10px;
+            padding: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            transition: transform 0.2s;
+            position:relative ;
+        }
+
+        .movie-card:hover {
+            transform: scale(1.05);
+        }
+
+        .movie-card img {
+            width: 100%;
+            border-radius: 5px;
+            height: 340px;
+            object-fit: cover;
+            
+        }
+
+        .download-btn {
+            display: inline-block;
+            padding: 10px 15px;
+            margin:;
+            background-color: tomato;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            width: 90%;
+        }
+
+        .download-btn:hover {
+            background-color: #9b6fdd;
+        }
+
+        /* Loading dots animation */
+        .loading-dots {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .loading-dots span {
+            width: 10px;
+            height: 10px;
+            margin: 0 5px;
+            background-color: tomato;
+            border-radius: 50%;
+            display: inline-block;
+            animation: bounce 1.2s infinite ease-in-out;
+        }
+
+        .loading-dots span:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .loading-dots span:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes bounce {
+            0%, 80%, 100% {
+                transform: scale(0);
+            }
+            40% {
+                transform: scale(1);
+            }
+        }
+
+        /* Category label styling */
+        .category-label {
+            display: inline-block;
+            padding:7px;
+            margin:2px;
+            background-color: #444;
+            color: #fff;
+            border-radius: 3px;
+            font-size: 14px;
+            font-weight: bold;
+            position:absolute;
+            right:0;
+            top:0;
+        }
+
+        .category-label.bangla {
+            background-color: #f54242; /* বাংলা মুভির জন্য লাল */
+        }
+
+        .category-label.hindi {
+            background-color: #4287f5; /* হিন্দি মুভির জন্য নীল */
+        }
+
+        .category-label.others {
+            background-color: #42f57b; /* অন্যান্য মুভির জন্য সবুজ */
+        }
+
+        @media (max-width: 600px) {
+            .movie-card {
+                width: 100%; /* Full width on small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>সার্চ কর তোমার পছন্দের মুভি</h3>
+        <div class="search-section">
+            <input type="text" id="search-bar" placeholder="Search for movies..." />
+            <button id="filter-button">Search</button>
+        </div>
+        <div id="loading" class="loading-dots" style="display: none;">
+            <span></span><span></span><span></span>
+        </div>
+        <div id="movie-list" class="movie-list"></div>
+        <div id="endMessage" style="display: none;">No more movies to load.</div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBsz-82MDaibWnIBUpoykrZHyJW7UMedX8",
+            authDomain: "movies-bee24.firebaseapp.com",
+            databaseURL: "https://movies-bee24-default-rtdb.firebaseio.com",
+            projectId: "movies-bee24",
+            storageBucket: "movies-bee24.appspot.com",
+            messagingSenderId: "1080659811750",
+            appId: "1:1080659811750:web:c1ef7d4dacc3ab17edc367"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const movieListContainer = document.getElementById('movie-list');
+        const loadingElement = document.getElementById('loading');
+        const searchBar = document.getElementById('search-bar');
+        const filterButton = document.getElementById('filter-button');
+
+        let allMovies = [];
+
+        // Load Movies from Firebase (but don't show until searched)
+        function loadMovies() {
+            const moviesRef = ref(db, 'movies');
+            onValue(moviesRef, (snapshot) => {
+                allMovies = [];
+                snapshot.forEach((childSnapshot) => {
+                    const movie = childSnapshot.val();
+                    allMovies.push(movie);
+                });
+            });
+        }
+
+        // Render Movies function with search logic
+        function renderMovies() {
+            const searchQuery = searchBar.value.toLowerCase();
+
+            // Filter movies based on the search query
+            const filteredMovies = allMovies.filter(movie => {
+                return movie.name.toLowerCase().includes(searchQuery);
+            });
+
+            // Clear the previous movie list before rendering
+            movieListContainer.innerHTML = ''; // Clear the list
+
+            if (filteredMovies.length === 0) {
+                movieListContainer.innerHTML = '<p>No movies found.<br><br>"গুগল থেকে মুভির সম্পূর্ণ সঠিক নাম জেনে সার্চ কর। সামান্য ভুল লেখলেও আসবেনা।"</p>';
+                return;
+            }
+
+            filteredMovies.forEach(movie => {
+                const movieCard = document.createElement('div');
+                movieCard.className = 'movie-card';
+
+                const movieImage = document.createElement('img');
+                movieImage.src = movie.fileURL; // Ensure to use a lower quality image URL if needed
+                movieImage.alt = movie.name;
+
+                const movieInfo = document.createElement('div');
+                movieInfo.className = 'movie-info';
+                movieInfo.innerHTML = `<h3>${movie.name} (${movie.year})</h3>`;
+
+                // Add category label
+                const categoryLabel = document.createElement('span');
+                categoryLabel.className = `category-label ${movie.category.toLowerCase()}`;
+                categoryLabel.textContent = movie.category; // Show movie category (Bangla, Hindi, Others)
+
+                const downloadLink = document.createElement('a');
+                downloadLink.textContent = "Download";
+                downloadLink.href = movie.downloadLink; // Use the movie link from the database
+                downloadLink.className = 'download-btn';
+                
+                // Append elements to the movie card
+                movieCard.appendChild(movieImage);
+                movieCard.appendChild(movieInfo);
+                movieCard.appendChild(categoryLabel); // Add category label to the movie card
+                movieCard.appendChild(downloadLink);
+                
+                // Append the movie card to the movie list container
+                movieListContainer.appendChild(movieCard);
+                });
+                }
+                
+                // Display loading animation
+                function showLoading() {
+                loadingElement.style.display = 'flex';
+                }
+                
+                // Hide loading animation
+                function hideLoading() {
+                loadingElement.style.display = 'none';
+                }
+                
+                // Add event listener to search button
+                filterButton.addEventListener('click', () => {
+                showLoading();
+                setTimeout(() => {
+                renderMovies(); // Filter and render movies after loading
+                hideLoading();
+                }, 1000); // Simulate a delay
+                });
+                
+                
+                
+                // Add event listener for "Enter" key press on search bar
+                searchBar.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                showLoading();
+                setTimeout(() => {
+                renderMovies(); // Filter and render movies after loading
+                hideLoading();
+                }, 1000); // Simulate a delay
+                }
+                });
+                
+                
+                
+                // Load movies initially from Firebase
+                loadMovies();
+                </script>
+                </body>
+                </html>
