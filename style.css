@@ -104,6 +104,7 @@ display :flex;
     position: relative;
     transition: all 0.3s ease;
     border: 1px solid grey;
+    overflow: hidden;
 }
 
 .movie-card:hover {
@@ -123,11 +124,21 @@ display :flex;
     width: 100%;
     padding: 5px;
     color: #e0e0e0;
+    flex-grow: 1; /* Allow the movie info to take available space */
+    
 }
 
 .movie-info h5 {
     font-size: 1em;
     margin-bottom: 5px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp:2; /* Limit to 2 lines */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 40px; /* Set a minimum height to ensure it occupies space */
+    line-height: 20px; /* Adjust line height for better spacing */
+    
 }
 
 .movie-info p {
