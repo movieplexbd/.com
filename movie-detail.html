@@ -221,13 +221,16 @@
         function renderMovieDetails(movie) {
             const container = document.getElementById('movie-detail-container');
             container.innerHTML = `
-                <div class="movie-detail-card">
-                    <img src="${movie.fileURL}" alt="${movie.name}">
-                    <h2>${movie.name}</h2>
-                    <p><strong>Year:</strong> ${movie.year}</p>
-                    <p><strong>Description:</strong> ${movie.description}</p>
-                    <a href="#" class="download-button" id="download-link">Download Movie</a>
-                </div>
+            <div><div class="movie-detail-card">
+            <img src="${movie.fileURL}" alt="${movie.name}">
+            <div class="movie-detail-card-content">
+            <h2>${movie.name}</h2>
+            <p><strong>Year:</strong> ${movie.year}</p>
+            
+            <a href="#" class="download-button" id="download-link">Download Movie</a>
+            </div>
+            </div>
+            <pre><p><strong>Description:</strong> ${movie.description}</p></pre></div>
             `;
 
             // Adding click event listener for download button
