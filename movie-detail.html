@@ -4,184 +4,314 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Details</title>
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> <!-- Font Awesome CDN -->
-    
-<link rel="stylesheet" href="subscribers.css">
-    <script type="module" src="subscribers.js"> </script>
-
-    
-    </head>
+</head>
 <body>
     <header>
         <a href="index.html" class="back-button"><i class="fas fa-arrow-left"></i> Back</a>
         <h1>Movie Details</h1>
     </header>
 
+
+<!----player ------->
+
+    <div id="movie-player-container">
+    <video id="movieVideo">
+    <source src="example.mp4" type="video/mp4" id="videoSource">
+    </video>
+    <div id="video-controls">
+    <!-- Progress Bar -->
+    <input type="range" id="progressBar" value="0" step="1">
+    
+    <!-- Control Buttons Row -->
+    <div class="controls-row">
+    <button id="playPauseBtn" class="control-btn"><i class="fas fa-play"></i></button>
+    <span id="time-display">00:00 / 00:00</span>
+    <button id="muteBtn" class="control-btn"><i class="fas fa-volume-up"></i></button>
+    <input type="range" id="volumeControl" class="control-range" value="100" max="100" step="1">
+    <button id="fullscreenBtn" class="control-btn"><i class="fas fa-expand"></i></button>
+    <button id="speedBtn" class="control-btn">1x</button>
+    </div>
+    </div>
+    </div>
+
     <main id="movie-detail-container">
         <!-- Movie details will be inserted here -->
         <script type='text/javascript' src='//pl24567243.cpmrevenuegate.com/2c/2e/fe/2c2efe59679705a5241ee417a74e18d5.js'></script>
+        
     </main>
 
-<div id="subscribePopup">
-    <h3>Subscribe for New Movie Updates!</h3>
-    <input type="text" id="userName" placeholder="Your Name" required />
-    <input type="email" id="userEmail" placeholder="Your Email" autocomplete="email" required />
-    <button id="subscribeButton" disabled>Subscribe</button>
+    <style type="text/css">
+    *{
+    
+    margin: 0;
+    padding: 0;
+    box-sizing:border-box;
+    
+    
+    }
+    .main-content{
+    width:100%;
+    
+    
+    
+    }
+    /* Styles for header */
+    header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color:transparent;
+    padding:5px;
+    position:fixed;
+    top:10px;
+    
+    }
+    
+    
+    header h1 {
+    margin: 0;
+    font-size: 1em;
+    color: #ddd;
+    }
+    
+    .back-button {
+    color: #ddd;
+    text-decoration: none;
+    font-size: 1em;
+    transition: color 0.3s;
+    }
+    
+    .back-button:hover {
+    color: #ffe600;
+    }
+    
+    /* Body and general styles */
+    body {
+    font-family: 'Arial', sans-serif;
+    
+    background-color: #1a1a1a;
+    color: #ffffff;
+    width:100%;
+    box-sizing:border-box;
+    }
+    
+    /* Container for movie details */
+    #movie-detail-container {
+    
+    width:100%;
+    margin: auto;
+    
+    }
+    
+    /* Movie detail card layout */
+    .movie-detail-card {
+    display: flex; /* Flexbox for side-by-side layout */
+    /* Horizontal alignment */
+    background-color: transparent;
+    
+    padding:5px;
+    width:100%;
+    
+    
+    }
+    
+    /* Image styling */
+    .movie-detail-card img{
+    width:40px; /* Image takes 40% width */
+    height:70px; /* Maintain aspect ratio */
+    
+    border-radius: 10px;
+    margin-right:10px; /* Space between image and text */
+    }
+    
+    /* Text content styling */
+    .movie-detail-card-content {
+    flex: 1; /* Take remaining space */
+    text-align: left; /* Align text to the left */
+    }
+    
+    .movie-detail-card-content h2 {
+    font-size: 1em;
+    margin: 10px 0;
+    color: #72DFE0;
+    }
+    pre {
+    
+    white-space: pre-wrap; /* টেক্সট র‍্যাপ করবে */
+    word-wrap: break-word; /* প্রয়োজন হলে শব্দ ভাঙবে */
+    overflow: auto; /* ডিভ এর সীমানার বাইরে গেলে স্ক্রল যোগ হবে */
+    font-family:'sans-serif', Courier, monospace;
+    line-height: 1.1;
+    }
+    
+    p {
+    font-size: 0.92em;
+    margin:5px 0;
+    
+    
+    padding:5px;
+    margin:3px;
+    border-radius: 5px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    }
+    
+    /* Download button */
+    .download-button {
+    display: inline-block;
+    padding: 5px;
+    background-color: #d66755;
+    color: #444;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size:0.9em;
+    transition: background-color 0.3s;
+    margin:0px auto;
+    margin-left :10%;
+    }
+    
+    .download-button:hover {
+    background-color: #ddd;
+    }
+    
+    /* Responsive design for small screens */
+    @media (max-width: 600px) {
+    
+    /*Stack items vertically */
+    
+    
+    .movie-detail-card img {
+    width:60px; /* Full width on small screens */
+    margin-bottom: 10px;
+    }
+    }
+   .hr{
+    color:#666;
+    border-color:#888;
+    
+    
+    
+  }
+    
+    </style>
+    
+    
+    
+    <style>
+    
+    
+    #movie-player-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin:0px auto;
+    background-color: #000;
+    overflow: hidden;
+    border-radius:
+    }
+    
+    #movieVideo {
+    width: 100%;
+    height: 250px;
+    margin-top:-20px;
+    }
+    
+    #video-controls {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height:53px;
+    background-color:transparent;
+    padding: 2px 0;
+    display: flex;
+    flex-direction: column;
+    transition: opacity 0.5s ease;
+    opacity: 1;
+    borde:1px solid teal;
+    }
+    
+    #video-controls.hidden {
+    opacity: 0;
+    pointer-events: none;
+    }
+    
+    #progressBar {
+    width: 95%;
+    height: 5px;
+    margin-bottom:10px;
+    margin:10px auto;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #888;
+    border-radius: 5px;
+    cursor: pointer;
+    }
+    
+    #progressBar::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    background: #72DFE0;
+    border-radius: 50%;
+    cursor: pointer;
+    }
+    
+    
+    #volumeControl{
+    
+    width:10%;
+    
+    
+    
+    }
+    
+    .controls-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    }
+    
+    .control-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size:1em;
+    cursor: pointer;
+    transition: color 0.3s;
+    }
+    
+    .control-btn:hover {
+    color: #72DFE0;
+    }
+    
+    #time-display {
+    color: #fff;
+    font-size: 1em;
+    }
+    </style>
+    
+    
+    
+
+     <div id="container-4d1f4910dba090b1bca9f9854eff9f28"></div>
+<div style="width: 98%; max-width: 800px; margin: 20px auto; padding: 10px; background-color: #2a2a2a; border-radius: 10px; ">
+    <h2 style="color: #72DFE0; margin-bottom: 20px;">Download Our App</h2>
+    <div style="display: flex; justify-content: center; gap: 20px;">
+        <a href="#" style="display: inline-flex; align-items: center; background-color: #3498db; color: #fff; padding: 10px 15px; border-radius: 5px; text-decoration: none; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#2980b9'" onmouseout="this.style.backgroundColor='#3498db'">
+            <i class="fab fa-google-play" style="margin-right: 5px;"></i> Download App
+        </a>
+        <a href="#" style="display: inline-flex; align-items: center; background-color: #777; color: #fff; padding: 10px 10px; border-radius: 5px; text-decoration: none; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#212529'" onmouseout="this.style.backgroundColor='#343a40'">
+            <i class="fab fa-app-store-ios" style="margin-right: 5px;"></i>Download page
+        </a>
+    </div>
 </div>
 
-<div id="successMessage">Thanks for subscribing!</div>
-
-    
 <script async="async" data-cfasync="false" src="//pl24842883.profitablecpmrate.com/db6410f9ee511c6ccb6af5bf9c77b5cb/invoke.js"></script>
 <div id="container-db6410f9ee511c6ccb6af5bf9c77b5cb"></div>
         
-<style type="text/css">
-        *{
-        
-        margin: 0;
-        padding: 0;
-        box-sizing:border-box;
-        
-        
-        }
-       .main-content{
-       width:100%;
-       
-       
-       
-       }
-        /* Styles for header */
-        header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background-color: #333;
-        padding: 20px;
-       
-        }
-       
-        
-        header h1 {
-        margin: 0;
-        font-size: 1.3em;
-        color: #ddd;
-        }
-        
-        .back-button {
-        color: #ddd;
-        text-decoration: none;
-        font-size: 1.2em;
-        transition: color 0.3s;
-        }
-        
-        .back-button:hover {
-        color: #ffe600;
-        }
-        
-        /* Body and general styles */
-        body {
-        font-family: 'Arial', sans-serif;
-        
-        background-color: #1a1a1a;
-        color: #ffffff;
-        width:100%;
-        box-sizing:border-box;
-        }
-        
-        /* Container for movie details */
-        #movie-detail-container {
-        
-        width:100%;
-        margin: auto;
-        
-        }
-        
-        /* Movie detail card layout */
-        .movie-detail-card {
-        display: flex; /* Flexbox for side-by-side layout */
-         /* Horizontal alignment */
-        background-color: transparent;
-        
-       padding:10px;
-        width:100%;
-        
-        
-        }
-        
-        /* Image styling */
-        .movie-detail-card img{
-        width:100px; /* Image takes 40% width */
-        height:200px; /* Maintain aspect ratio */
-        object-fit: cover;
-        border-radius: 10px;
-        margin-right: 20px; /* Space between image and text */
-        }
-        
-        /* Text content styling */
-        .movie-detail-card-content {
-        flex: 1; /* Take remaining space */
-        text-align: left; /* Align text to the left */
-        }
-        
-        .movie-detail-card-content h2 {
-        font-size: 1.2em;
-        margin: 10px 0;
-        color: #72DFE0;
-        }
-        pre {
-        white-space: pre-wrap; /* টেক্সট র‍্যাপ করবে */
-        word-wrap: break-word; /* প্রয়োজন হলে শব্দ ভাঙবে */
-        overflow: auto; /* ডিভ এর সীমানার বাইরে গেলে স্ক্রল যোগ হবে */
-        font-family:'sans-serif', Courier, monospace;
-        line-height: 1.5;
-        }
-        
-        p {
-        font-size: 0.92em;
-        margin:5px 0;
-        
-        border: 1px solid #888;
-        padding:5px;
-        margin:3px;
-        border-radius: 5px;
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-        }
-        
-        /* Download button */
-        .download-button {
-        display: inline-block;
-        padding: 10px 25px;
-        background-color: #72DFE0;
-        color: #444;
-        border: none;
-        border-radius: 5px;
-        text-decoration: none;
-        font-size: 1em;
-        transition: background-color 0.3s;
-        margin-top: 15px;
-        }
-        
-        .download-button:hover {
-        background-color: #ddd;
-        }
-        
-        /* Responsive design for small screens */
-        @media (max-width: 600px) {
-        
-         /*Stack items vertically */
-        
-        
-        .movie-detail-card img {
-        width:150px; /* Full width on small screens */
-        margin-bottom: 15px;
-        }
-        }
-        
-    </style>
-        
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
@@ -225,31 +355,111 @@
             <img src="${movie.fileURL}" alt="${movie.name}">
             <div class="movie-detail-card-content">
             <h2>${movie.name}</h2>
-            <p><strong>Year:</strong> ${movie.year}</p>
+            <p><strong>Year:</strong> ${movie.year}<a href="#" class="download-button" id="download-link">Download Movie</a>
+            </p>
+           
+            </div>
             
-            <a href="#" class="download-button" id="download-link">Download Movie</a>
+            
             </div>
-            </div>
-            <pre><p><strong>Description:</strong> ${movie.description}</p></pre></div>
+             <hr class=hr>
             `;
+
+            // Update video source
+            const video = document.getElementById('movieVideo');
+            const videoSource = document.getElementById('videoSource');
+            videoSource.src = movie.downloadLink;
+            video.load();
 
             // Adding click event listener for download button
             const downloadButton = document.getElementById('download-link');
             downloadButton.addEventListener('click', (event) => {
-                event.preventDefault(); // Prevent default anchor behavior
-                clickCount++; // Increment click count
+                event.preventDefault();
+                clickCount++;
                 if (clickCount < 3) {
-                    // First two clicks show ad link
-                    window.open(movie.adLink, '_blank'); // Open ad link in new tab
+                    window.open(movie.adLink, '_blank'); 
                 } else {
-                    // Third click shows actual download link
-                    window.location.href = movie.downloadLink; // Redirect to download link
+                    window.location.href = movie.downloadLink;
+                    clickCount = 0;
                 }
             });
         }
 
-        // Load movie details on page load
         getMovieDetails();
+
+        // Video control functions
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const video = document.getElementById('movieVideo');
+        const progressBar = document.getElementById('progressBar');
+        const muteBtn = document.getElementById('muteBtn');
+        const volumeControl = document.getElementById('volumeControl');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const speedBtn = document.getElementById('speedBtn');
+        const timeDisplay = document.getElementById('time-display');
+
+        // Play/Pause functionality
+        playPauseBtn.addEventListener('click', () => {
+            if (video.paused) {
+                video.play();
+                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            } else {
+                video.pause();
+                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+            }
+        });
+
+        // Mute/Unmute functionality
+        muteBtn.addEventListener('click', () => {
+            video.muted = !video.muted;
+            muteBtn.innerHTML = video.muted ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
+        });
+
+        // Volume control
+        volumeControl.addEventListener('input', () => {
+            video.volume = volumeControl.value / 100;
+        });
+
+        // Fullscreen functionality
+        fullscreenBtn.addEventListener('click', () => {
+            if (video.requestFullscreen) {
+                video.requestFullscreen();
+            } else if (video.mozRequestFullScreen) {
+                video.mozRequestFullScreen();
+            } else if (video.webkitRequestFullscreen) {
+                video.webkitRequestFullscreen();
+            }
+        });
+
+        // Playback speed control
+        speedBtn.addEventListener('click', () => {
+            video.playbackRate = video.playbackRate === 1 ? 1.5 : 1;
+            speedBtn.innerText = video.playbackRate === 1 ? '1x' : '1.5x';
+        });
+
+        // Update progress bar and time display
+        video.addEventListener('timeupdate', () => {
+            progressBar.value = (video.currentTime / video.duration) * 100;
+            const currentMinutes = Math.floor(video.currentTime / 60);
+            const currentSeconds = Math.floor(video.currentTime % 60);
+            const totalMinutes = Math.floor(video.duration / 60);
+            const totalSeconds = Math.floor(video.duration % 60);
+            timeDisplay.textContent = `${currentMinutes}:${currentSeconds < 10 ? '0' + currentSeconds : currentSeconds} / ${totalMinutes}:${totalSeconds < 10 ? '0' + totalSeconds : totalSeconds}`;
+        });
+
+        // Handle progress bar click
+        progressBar.addEventListener('input', () => {
+            video.currentTime = (progressBar.value / 100) * video.duration;
+        });
+        
+        video.addEventListener('waiting', () => {
+        // Show loader
+        });
+        video.addEventListener('playing', () => {
+        // Hide loader
+        });
+        
+        
+        
     </script>
 </body>
 </html>
