@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
+    
     <meta charset="UTF-8">
     
     <title>Movie Plex BD - বাংলা মুভি, bangla dibbing movie, বাংলা সব ডাবিং মুভি।</title>
@@ -9,142 +10,352 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     
     <link rel="icon" href="https://d1nxzqpcg2bym0.cloudfront.net/google_play/com.bydeluxe.d3.android.program.movieplex/00a67ca8-0ad4-11e5-8125-4358ca5903a3/128x128" type="image/x-icon">
-   
-        <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link rel="stylesheet" href="style-feedback.css">
     
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style-feedback.css">
+    
+    
+   <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans Bengali', sans-serif;
+        }
 
+        body {
+            background: #0a0e17;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #ff2e63;
+            font-family: 'Cinzel', serif;
+            text-transform: uppercase;
+        }
+
+        .menu-icon {
+            font-size: 1.8em;
+            cursor: pointer;
+            display: block;
+        }
+
+        nav {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        nav.active {
+            display: flex;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1em;
+            margin: 10px 0;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #ff2e63;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUVJkfuC-cL81XAOLvTyQHawDH4uVaJDJLHQ&usqp=CAU') no-repeat center center/cover;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #ff2e63;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+        }
+
+        .hero p {
+            font-size: 1em;
+            margin-bottom: 25px;
+            color: #e0e0e0;
+        }
+
+        .explore-btn {
+            padding: 12px 30px;
+            font-size: 1.3em;
+            background: linear-gradient(45deg, #ff2e63, #ff6b6b);
+            color: white;
+            text-decoration:none;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .explore-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 46, 99, 0.7);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 50px 20px;
+            background: #121826;
+            text-align: center;
+        }
+
+        .features h2 {
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            color: #ff2e63;
+        }
+
+        .feature-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: #1e2533;
+            padding: 20px;
+            border-radius: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .feature-card img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.2em;
+            color: #ff2e63;
+        }
+
+        .feature-card p {
+            font-size: 0.9em;
+            color: #e0e0e0;
+        }
+
+        /* Footer */
+        footer {
+            background: #0a0e17;
+            padding: 30px 20px;
+            text-align: center;
+            border-top: 1px solid #ff2e63;
+        }
+
+        footer p {
+            font-size: 0.9em;
+            color: #e0e0e0;
+        }
+
+        footer a {
+            color: #ff2e63;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Mobile-First Responsive Design */
+        @media (min-width: 768px) {
+            .menu-icon {
+                display: none;
+            }
+
+            nav {
+                display: flex;
+                position: static;
+                background: none;
+                flex-direction: row;
+                justify-content: flex-end;
+                padding: 0;
+            }
+
+            nav a {
+                margin: 0 15px;
+            }
+
+            .hero h1 {
+                font-size: 3em;
+            }
+
+            .hero p {
+                font-size: 1.2em;
+            }
+
+            .features {
+                padding: 80px 50px;
+            }
+
+            .feature-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+    </style>
 </head>
 <body>
-
-    <!-- অডিও প্লেয়ার -->
-    <audio id="movieAudio" controls>
-        <source id="audioSource" type="audio/mp3">
-        আপনার ব্রাউজার অডিও ফাইল সমর্থন করছে না।
-    </audio>
+    <!-- Header -->
     <header>
-        <h1><span class="span1">MOVIE </span><span class="span2">PLEX BD.xyz</span></h1>
-        <a href="final-search.html" id="search" >search</a>
+        <div class="logo">Movieplexbd</div>
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <nav id="nav-menu">
+            <a href="#home">হোম</a>
+            <a href="#movies">সিনেমা</a>
+            <a href="#about">আমাদের সম্পর্কে</a>
+            <a href="#contact">যোগাযোগ</a>
+        </nav>
     </header>
 
-    <section>
-        <div class="slider-container">
-            <div class="slider-wrapper" id="slider"></div>
-            <button class="nav-button prev-button" id="prevs">&#10094;</button>
-            <button class="nav-button next-button" id="nexts">&#10095;</button>
-            <div class="dots-container" id="dots"></div>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>মুভিপ্লেক্সবিডি-তে স্বাগতম</h1>
+            <p>আপনার প্রিয় সিনেমা এবং শো এখন হাতের মুঠোয়। সকল বাংলা ডাবিং মবিএ পেয়ে যাবেন!</p>
+           <p> <a class="explore-btn" href="home.html">প্রবেশ করুন</button></a>
         </div>
     </section>
 
-    <section>
-        <div class="container3">
-            <h2 class="h3">Top Movies</h2>
-            <div id="topMoviesCarousel" class="movies-container3"></div>
-            <button class="carousel-control-prev" id="prevBtn">&#8249;</button>
-            <button class="carousel-control-next" id="nextBtn">&#8250;</button>
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <h2>কেন আমাদের বেছে নিবেন?</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQ-9rKyQ5lLS51UQiUlF2mZ5RqVZBBtAPsgw&usqp=CAU" alt="সিনেমা">
+                <div>
+                    <h3>বিশাল সংগ্রহ</h3>
+                    <p>বাংলা, হলিউড ও বলিউডের সেরা সিনেমা।</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <img src="data:image/jpeg;base64,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hxWTdby6Qkyyc4gICAgINHF8LjqozFI27d3ODzgq1bTVfHktS2sK7qtHa7D3mSmc5zL7WZm3M5m9dG+tur0qZseWNLPWHT+pYNWSFhcOhzT1i6nk1PB0t0l6+ceX0dnecq8iO6Pt9e55x5fRm95yciO6ft8dzzjy+jN7zlPIjufbo7nnHl9Gb3nJyI7n26O7HnIl9GZ3neCcg+3R3PORL6MzvO8E5B9ujueciX0Zned4JyD7dHc85Evoze87wUciO59vjueciX0ZnecnIjujwFe7HnHl9HZ3nJyY7ngK92rLjuJV36ONha0/dhwHW4+KtsrVfk4cXnZINFdChARNPZ8oza3a1p5zzlUyZtfKHJm4nd+NeiZrByMqqBSCAgICAgwg85IWu2safaAU1TEy+Pocf3be61TrK2+3dzdI8KEtLMyONvGFuVg0E57Lq1L+bXh801vE2nyVf5NVnosnYuqL17vY8Vi7nk1WeiyditzK9zxWLueTVZ6LJ2KObXueKxdzyarPRZOxObVbxWLueTVZ6LJ2Jzao8Vi7u/oTo9OyqD5YC2MNdfWAsbiwFt6plvXTyc3F8VW1NKz5rD+hR/dt7rfBc26Xlcyx9Dj+7b3W+CjdKN9ns1oCjVEzL6RAgKAUggICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIP/9k=" alt="স্ট্রিমিং">
+                <div>
+                    <h3>এইচডি স্ট্রিমিং</h3>
+                    <p>ক্রিস্টাল ক্লিয়ার ভিডিও মান।</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <img src="https://cdn.pixabay.com/animation/2022/12/05/10/29/10-29-30-682_512.gif" alt="ডাউনলোড">
+                <div>
+                    <h3>ডাউনলোড করুন</h3>
+                    <p>ইন্টারনেট ছাড়াই উপভোগ করুন।</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <img src="https://cdn.dribbble.com/userupload/19717483/file/original-956ded2007b762cb919a783aeb0d61b3.gif" alt="ডিভাইস">
+                <div>
+                    <h3>যেকোনো ডিভাইস</h3>
+                    <p>মোবাইল, ট্যাব বা টিভিতে দেখুন।</p>
+                </div>
+            </div>
         </div>
     </section>
 
-    <main>
-        <fieldset class="notice-fieldset">
-            <legend>নোটিশ</legend>
-            <p> 🔴 এখানে সকল ধরনের নতুন বাংলা ডাবিং ও হিন্দি মুভি পেয়ে যাবে।</p><br>
-            <p> 🔴 মুভি ডাউনলোড করার সময়, ডাউনলোড বাটনে দুইবার চাপ দিলে অ্যাড দেখাবে, তৃতীয়বারের সময় ডাউনলোড করতে পারবে। </p>
-        </fieldset>
+    <!-- Footer -->
+    <footer id="contact">
+        <p>© 2025 Movieplexbd. সকল অধিকার সংরক্ষিত। | <a href="#privacy">গোপনীয়তা নীতি</a> | <a href="#terms">শর্তাবলী</a></p>
+    </footer>
 
+    <!-- JavaScript -->
+    <script>
+        // Toggle Mobile Menu
+        function toggleMenu() {
+            const nav = document.getElementById('nav-menu');
+            nav.classList.toggle('active');
+        }
 
-
-<div style="background-color: #1e1e1e; border: 1px solid #0084ff; padding: 15px; border-radius: 10px; max-width: 400px; margin: 10px 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-    <h2 style="color: #00aaff; text-align: center; font-family: 'Arial', sans-serif; font-weight: bold; font-size: 20px;">সতর্কতা </h2>
-    <p style="color: #ddd; font-size: 16px; line-height: 1.6; text-align: center; font-family: 'Arial', sans-serif;">
-    
-
-
-আমাদের ওয়েবসাইট সবসময় পেতে,গুগল এ সার্চ করুন <strong  style="color:tomato">movieplexbd.xyz</strong> সেম ভাবে সার্চ না করলে গুগল সার্চে আমাদের ওয়েবসাইটে পাবেন না। তাই সেমভাবে লেখে সার্চ করবেন। পরবর্তীতে মনে না থাকলে স্ক্রিনশট নিয়ে রাখুন । </div>
-
-
-        
-<!---feedback --->
-        <div class="opinion">
-  <div class="containerss">
-    <h4>আপনার মতামত আমাদের জানান</h4>
-
-    <form id="feedbackForm">
-      <textarea id="feedback" placeholder="Write your feedback" required></textarea>
-      <button class="buttons" type="submit">Send <i class="fas fa-paper-plane"></i></button>
-    </form>
-
-    <p id="messagess"></p>
-  </div>
-</div>
-  
-
+        // Smooth Scroll
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                toggleMenu();
+                const section = document.querySelector(this.getAttribute('href'));
+                section.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
 
         
 
-        <h3 class="all-sec-h3">All New Movies</h3>
+        // Animate Feature Cards on Scroll
+        const featureCards = document.querySelectorAll('.feature-card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.3 });
 
-        <!-- Category buttons -->
-        <div id="categoryButtons">
-            <button class="category-btn active" data-category="allMovies">All Movies</button>
-            <button class="category-btn" data-category="bangla">বাংলা ডাবিং</button>
-            <button class="category-btn" data-category="hindi">Hindi</button>
-            <button class="category-btn" data-category="others">Others</button>
-        </div>
-        
-        <div id="loading">Loading movies...</div>
-        <div class="main-div">
-            <div id="movie-list" class="movie-list"></div>
-        </div>
-        <button id="loadMore" class="load-more-btn" style="display: none;">Load More</button>
-        <div id="endMessage" style="display: none;">🤩 সব মুভি লোড করা হয়েছে। নতুন মুভি আপলোড করা হবে। 🤩</div>
-    </main>
-
-    <!-- Modal for Movie details -->
-    <div id="movie-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <h2 id="modal-title"></h2>
-            <p id="modal-description"></p>
-        </div>
-    </div>
- 
-    
-
-    
-    <style type="text/css">
-    .load-more-btn {
-    background-color: transparent;
-    color: white;
-    border:1px solid #888;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 5px;
-    margin: 20px auto;
-    display: block;
-    }
-    
-    .load-more-btn:hover {
-    background-color: #444;
-    }
-    
-    #loading {
-    text-align: center;
-    padding: 20px;
-    }
-    </style>       
-    
-    
-    
-    <script type="module" src="audio.js"></script>  
-
- <script type="module" src="mainV2.js"></script>  
-<script type="module" src="slider.js"></script>
-<script type="module" src="topMovies.js"></script>
-  <script type="module" src="feedback.js"> </script>
-<script type="module" src="userCount.js"> </script>
-
-      
+        featureCards.forEach(card => {
+            card.style.opacity = 0;
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.5s ease';
+            observer.observe(card);
+        });
+    </script>
 </body>
 </html>
