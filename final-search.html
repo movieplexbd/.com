@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie Library</title>
+    <title>মুভি লাইব্রেরি</title>
     
     <style type="text/css">
         body {
@@ -35,10 +35,16 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom:4px;
+            position: relative; 
+        }
+
+        .search-input-wrapper { 
+            position: relative;
+            width: 80%; 
         }
 
         input[type="text"] {
-            width: 80%;
+            width: 100%; 
             padding: 12px;
             border: 1px solid tomato;
             border-radius: 10px;
@@ -46,12 +52,50 @@
             color: #fff;
             font-size: 16px;
             transition: border-color 0.3s;
+            box-sizing: border-box;
         }
 
         input[type="text"]:focus {
             border-color: #bb86fc;
             outline: none;
         }
+
+        .suggestions-container {
+            position: absolute;
+            top: 100%; 
+            left: 0;
+            right: 0; 
+            background-color: #3e3e3e;
+            border: 1px solid #555;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+            z-index: 1000;
+            max-height: 250px; /* Increased max-height */
+            overflow-y: auto;
+            display: none; 
+            box-sizing: border-box;
+        }
+
+        .suggestion-item {
+            padding: 10px;
+            cursor: pointer;
+            color: #e0e0e0;
+            border-bottom: 1px solid #555;
+            font-size: 14px;
+        }
+        .suggestion-item strong { /* For highlighting search term */
+            color: tomato;
+        }
+
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+
+        .suggestion-item:hover,
+        .suggestion-item.active-suggestion { /* For keyboard navigation highlight */
+            background-color: #505050;
+        }
+
 
         button {
             padding: 12px 10px;
@@ -96,13 +140,12 @@
             border-radius: 5px;
             height: 340px;
             object-fit: cover;
-            
+            background-color: #555; /* Placeholder bg for image */
         }
 
         .download-btn {
             display: inline-block;
             padding: 10px 15px;
-            margin:;
             background-color: tomato;
             color: #fff;
             border: none;
@@ -110,13 +153,14 @@
             text-decoration: none;
             transition: background-color 0.3s;
             width: 90%;
+            text-align: center;
+            margin-top: 10px;
         }
 
         .download-btn:hover {
             background-color: #9b6fdd;
         }
 
-        /* Loading dots animation */
         .loading-dots {
             display: flex;
             justify-content: center;
@@ -151,7 +195,6 @@
             }
         }
 
-        /* Category label styling */
         .category-label {
             display: inline-block;
             padding:7px;
@@ -167,30 +210,43 @@
         }
 
         .category-label.bangla {
-            background-color: #f54242; /* বাংলা মুভির জন্য লাল */
+            background-color: #f54242; 
         }
 
         .category-label.hindi {
-            background-color: #4287f5; /* হিন্দি মুভির জন্য নীল */
+            background-color: #4287f5; 
         }
 
         .category-label.others {
-            background-color: #42f57b; /* অন্যান্য মুভির জন্য সবুজ */
+            background-color: #42f57b; 
         }
 
         @media (max-width: 600px) {
             .movie-card {
-                width: 100%; /* Full width on small screens */
+                width: 100%; 
+            }
+            .search-input-wrapper {
+                width: 70%; 
+            }
+            input[type="text"] {
+                font-size: 14px;
+            }
+            button {
+                font-size: 14px;
+                padding: 12px 8px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h3>সার্চ কর তোমার পছন্দের মুভি</h3>
+        
         <div class="search-section">
-            <input type="text" id="search-bar" placeholder="Search for movies..." />
-            <button id="filter-button">Search</button>
+            <div class="search-input-wrapper">
+                <input type="text" id="search-bar" placeholder="মুভির নাম লিখে সার্চ করুন..." autocomplete="off" />
+                <div id="suggestions-container" class="suggestions-container"></div>
+            </div>
+            <button id="filter-button">সার্চ করুন</button>
         </div>
         <div id="loading" class="loading-dots" style="display: none;">
             <span></span><span></span><span></span>
@@ -220,35 +276,162 @@
         const loadingElement = document.getElementById('loading');
         const searchBar = document.getElementById('search-bar');
         const filterButton = document.getElementById('filter-button');
+        const suggestionsContainer = document.getElementById('suggestions-container');
 
         let allMovies = [];
+        let activeSuggestionIndex = -1; // For keyboard navigation
 
-        // Load Movies from Firebase (but don't show until searched)
+        // Debounce function
+        function debounce(func, delay) {
+            let timeoutId;
+            return function(...args) {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => {
+                    func.apply(this, args);
+                }, delay);
+            };
+        }
+
         function loadMovies() {
             const moviesRef = ref(db, 'movies');
             onValue(moviesRef, (snapshot) => {
-                allMovies = [];
+                allMovies = []; 
                 snapshot.forEach((childSnapshot) => {
                     const movie = childSnapshot.val();
-                    allMovies.push(movie);
+                    if (movie && movie.name) { 
+                       allMovies.push(movie);
+                    }
                 });
             });
         }
 
-        // Render Movies function with search logic
-        function renderMovies() {
-            const searchQuery = searchBar.value.toLowerCase();
+        function hideSuggestions() {
+            suggestionsContainer.innerHTML = '';
+            suggestionsContainer.style.display = 'none';
+            activeSuggestionIndex = -1;
+        }
 
-            // Filter movies based on the search query
+        function highlightSearchTerm(text, query) {
+            if (!query) return text;
+            // Escape special characters in query for regex
+            const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(`(${escapedQuery})`, 'gi');
+            return text.replace(regex, '<strong>$1</strong>');
+        }
+        
+        function showSuggestions(filteredSuggestions) {
+            hideSuggestions(); 
+            const query = searchBar.value.toLowerCase().trim();
+
+            if (filteredSuggestions.length === 0 || query.length === 0) {
+                return;
+            }
+
+            const suggestionsToShow = filteredSuggestions.slice(0, 7);
+
+            suggestionsToShow.forEach(movie => {
+                const item = document.createElement('div');
+                item.classList.add('suggestion-item');
+                item.innerHTML = highlightSearchTerm(movie.name, query); // Use innerHTML for strong tag
+                item.addEventListener('click', () => {
+                    searchBar.value = movie.name; 
+                    hideSuggestions();
+                    performSearch(); 
+                });
+                suggestionsContainer.appendChild(item);
+            });
+            suggestionsContainer.style.display = 'block';
+        }
+        
+        function updateActiveSuggestionDOM() {
+            const items = suggestionsContainer.querySelectorAll('.suggestion-item');
+            items.forEach((item, index) => {
+                if (index === activeSuggestionIndex) {
+                    item.classList.add('active-suggestion');
+                    item.scrollIntoView({ block: 'nearest' }); // Scroll active item into view
+                } else {
+                    item.classList.remove('active-suggestion');
+                }
+            });
+        }
+
+        const handleSearchInput = () => {
+            const query = searchBar.value.toLowerCase().trim();
+            if (query.length < 1) { 
+                hideSuggestions();
+                return;
+            }
+
+            const filteredSuggestions = allMovies.filter(movie => 
+                movie.name.toLowerCase().includes(query)
+            );
+            showSuggestions(filteredSuggestions);
+        };
+
+        searchBar.addEventListener('input', debounce(handleSearchInput, 300));
+
+        searchBar.addEventListener('keydown', (e) => {
+            const items = suggestionsContainer.querySelectorAll('.suggestion-item');
+            if (suggestionsContainer.style.display !== 'block' && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
+                 if (searchBar.value.trim().length > 0) handleSearchInput(); // Show suggestions if input has text
+                 return;
+            }
+            if (items.length === 0 && (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'Enter')) return;
+
+
+            switch (e.key) {
+                case 'ArrowDown':
+                    e.preventDefault();
+                    activeSuggestionIndex = (activeSuggestionIndex + 1) % items.length;
+                    updateActiveSuggestionDOM();
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault();
+                    activeSuggestionIndex = (activeSuggestionIndex - 1 + items.length) % items.length;
+                    updateActiveSuggestionDOM();
+                    break;
+                case 'Enter':
+                    if (activeSuggestionIndex > -1 && items[activeSuggestionIndex]) {
+                        e.preventDefault(); 
+                        items[activeSuggestionIndex].click(); // Simulate click on the active suggestion
+                    } else {
+                        // If no suggestion is selected, perform normal search
+                        performSearch();
+                    }
+                    hideSuggestions();
+                    break;
+                case 'Escape':
+                    hideSuggestions();
+                    break;
+            }
+        });
+
+        searchBar.addEventListener('blur', () => {
+            setTimeout(hideSuggestions, 150); 
+        });
+        
+        searchBar.addEventListener('focus', () => {
+            if (searchBar.value.trim() !== '') {
+                 handleSearchInput(); // Re-show suggestions if there's text
+            }
+        });
+
+
+        function renderMovies() {
+            const searchQuery = searchBar.value.toLowerCase().trim();
+            movieListContainer.innerHTML = ''; 
+
+            if (searchQuery === "") {
+                 movieListContainer.innerHTML = '<p style="text-align:center; width:100%;">অনুগ্রহ করে কোনো একটি মুভির নাম লিখে সার্চ করুন।</p>';
+                 return;
+            }
+
             const filteredMovies = allMovies.filter(movie => {
                 return movie.name.toLowerCase().includes(searchQuery);
             });
 
-            // Clear the previous movie list before rendering
-            movieListContainer.innerHTML = ''; // Clear the list
-
             if (filteredMovies.length === 0) {
-                movieListContainer.innerHTML = '<p>No movies found.<br><br>"গুগল থেকে মুভির সম্পূর্ণ সঠিক নাম জেনে সার্চ কর। সামান্য ভুল লেখলেও আসবেনা।"</p>';
+                movieListContainer.innerHTML = `<p style="text-align:center; width:100%;">দুঃখিত, "${searchBar.value}" নামের কোনো মুভি খুঁজে পাওয়া যায়নি।<br><br>সঠিক বানানে পুরো নামটি লিখুন। গুগল থেকে মুভির সঠিক নামটি জেনে নিতে পারেন।</p>`;
                 return;
             }
 
@@ -257,70 +440,66 @@
                 movieCard.className = 'movie-card';
 
                 const movieImage = document.createElement('img');
-                movieImage.src = movie.fileURL; // Ensure to use a lower quality image URL if needed
+                movieImage.src = movie.fileURL; 
                 movieImage.alt = movie.name;
+                movieImage.loading = "lazy"; // Lazy loading for images
+                movieImage.onerror = function() { 
+                    this.alt = 'ছবি পাওয়া যায়নি';
+                    // this.src = 'placeholder.jpg'; // Optional placeholder
+                };
 
                 const movieInfo = document.createElement('div');
                 movieInfo.className = 'movie-info';
-                movieInfo.innerHTML = `<h3>${movie.name} (${movie.year})</h3>`;
+                movieInfo.innerHTML = `<h3>${movie.name} (${movie.year || 'N/A'})</h3>`;
 
-                // Add category label
                 const categoryLabel = document.createElement('span');
-                categoryLabel.className = `category-label ${movie.category.toLowerCase()}`;
-                categoryLabel.textContent = movie.category; // Show movie category (Bangla, Hindi, Others)
+                categoryLabel.className = `category-label ${(movie.category || 'others').toLowerCase()}`;
+                categoryLabel.textContent = movie.category || 'Others'; 
 
                 const downloadLink = document.createElement('a');
-                downloadLink.textContent = "Download";
-                downloadLink.href = movie.downloadLink; // Use the movie link from the database
+                downloadLink.textContent = "ডাউনলোড করুন";
+                downloadLink.href = movie.downloadLink; 
                 downloadLink.className = 'download-btn';
-                
-                // Append elements to the movie card
+                downloadLink.target = "_blank"; 
+
                 movieCard.appendChild(movieImage);
                 movieCard.appendChild(movieInfo);
-                movieCard.appendChild(categoryLabel); // Add category label to the movie card
+                movieCard.appendChild(categoryLabel); 
                 movieCard.appendChild(downloadLink);
                 
-                // Append the movie card to the movie list container
                 movieListContainer.appendChild(movieCard);
-                });
-                }
-                
-                // Display loading animation
-                function showLoading() {
-                loadingElement.style.display = 'flex';
-                }
-                
-                // Hide loading animation
-                function hideLoading() {
-                loadingElement.style.display = 'none';
-                }
-                
-                // Add event listener to search button
-                filterButton.addEventListener('click', () => {
-                showLoading();
-                setTimeout(() => {
-                renderMovies(); // Filter and render movies after loading
+            });
+        }
+        
+        function showLoading() {
+            loadingElement.style.display = 'flex';
+            movieListContainer.innerHTML = ''; // Clear previous results while loading
+        }
+        
+        function hideLoading() {
+            loadingElement.style.display = 'none';
+        }
+
+        function performSearch() {
+            hideSuggestions(); 
+            showLoading();
+            // Simulate network delay for better UX, remove if not needed
+            setTimeout(() => {
+                renderMovies(); 
                 hideLoading();
-                }, 1000); // Simulate a delay
-                });
-                
-                
-                
-                // Add event listener for "Enter" key press on search bar
-                searchBar.addEventListener('keypress', (event) => {
-                if (event.key === 'Enter') {
-                showLoading();
-                setTimeout(() => {
-                renderMovies(); // Filter and render movies after loading
-                hideLoading();
-                }, 1000); // Simulate a delay
-                }
-                });
-                
-                
-                
-                // Load movies initially from Firebase
-                loadMovies();
-                </script>
-                </body>
-                </html>
+            }, 300); 
+        }
+        
+        filterButton.addEventListener('click', performSearch);
+        
+        // No separate Enter key listener for searchBar needed if 'Enter' in keydown handles it
+        // searchBar.addEventListener('keypress', (event) => {
+        //     if (event.key === 'Enter' && suggestionsContainer.style.display === 'none') {
+        //         performSearch(); // Perform search only if suggestions are not active
+        //     }
+        // });
+        
+        loadMovies();
+    </script>
+</body>
+</html>

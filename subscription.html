@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription Plan - Movie Site</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style type="text/css">
+    :root {
+    --bg-dark: #0B0C10;
+    --bg-medium: #1F2833;
+    --bg-light: #2c3e50;
+    --text-primary: #E0E0E0;
+    --text-secondary: #a0b0c0;
+    --accent-primary: #66FCF1;
+    --accent-primary-rgb: 102, 252, 241;
+    --accent-secondary: #4FA8A3;
+    --accent-tertiary: #ffc107; 
+    --border-color: #354656;
+    --card-shadow: rgba(0,0,0,0.35);
+    --card-shadow-hover: rgba(var(--accent-primary-rgb), 0.3);
+    --success-color: #2ecc71;
+    --danger-color: #e74c3c;
+    --font-primary: 'Montserrat', sans-serif;
+    --font-bengali: 'Hind Siliguri', sans-serif;
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+    font-family: var(--font-primary);
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center; 
+    padding: 15px; 
+    }
+    
+    .container { width: 100%; max-width: 500px; margin: 0 auto; }
+    .subscription-hero { text-align: center; margin-bottom: 20px; }
+    .subscription-hero h1 { font-size: 2.2em; color: var(--accent-primary); margin-bottom: 10px; font-weight: 700; text-shadow: 0 0 10px rgba(var(--accent-primary-rgb), 0.3); font-family: var(--font-bengali); }
+    .subscription-hero p { font-size: 1em; color: var(--text-secondary); max-width: 600px; margin: 0 auto 15px auto; font-family: var(--font-bengali); }
+    .plan-card-wrapper { display: flex; justify-content: center; width: 100%; }
+    .plan-card { 
+    background-color: var(--bg-medium); 
+    border-radius: 16px; 
+    padding: 25px; 
+    box-shadow: 0 8px 25px var(--card-shadow); 
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+    display: flex; 
+    flex-direction: column; 
+    border: 2px solid var(--accent-tertiary); 
+    position: relative; 
+    overflow: hidden; 
+    width: 100%; 
+    max-width: 450px; 
+    }
+    .plan-card:hover { transform: translateY(-5px) scale(1.01); box-shadow: 0 12px 35px rgba(var(--accent-primary-rgb), 0.3); }
+    .plan-card::before { 
+    content: "সেরা অফার"; 
+    position: absolute; 
+    top: 12px; 
+    right: -40px; 
+    background-color: var(--accent-primary); 
+    color: var(--bg-dark); 
+    padding: 5px 35px; 
+    font-size: 0.85em; 
+    font-weight: 700; 
+    transform: rotate(45deg); 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2); 
+    text-transform: uppercase; 
+    letter-spacing: 1px; 
+    font-family: var(--font-bengali); 
+    z-index: 1; 
+    }
+    .plan-name { font-size: 1.8em; font-weight: 700; color: var(--accent-tertiary); margin-bottom: 5px; text-align: center; font-family: var(--font-bengali); }
+    .plan-price { font-size: 2.8em; font-weight: 800; color: var(--text-primary); margin-bottom: 5px; text-align: center; }
+    .plan-price span.currency { font-size: 0.5em; vertical-align: super; margin-right: 3px; }
+    .plan-price span.period { font-size: 0.35em; font-weight: 500; color: var(--text-secondary); font-family: var(--font-bengali); text-transform: uppercase; }
+    .plan-description { font-size: 0.95em; color: var(--text-secondary); text-align: center; margin-bottom: 20px; min-height: 35px; font-family: var(--font-bengali); }
+    .plan-features { list-style: none; margin-bottom: 15px; }
+    .plan-features li { margin-bottom: 10px; display: flex; align-items: center; font-size: 1em; font-family: var(--font-bengali); }
+    .plan-features li i { margin-right: 12px; font-size: 1.1em; }
+    .plan-features li.included i { color: var(--success-color); }
+    .plan-features li.not-included i { color: var(--danger-color); }
+    .details-toggle-btn { 
+    background: none; 
+    border: 1px solid var(--accent-secondary); 
+    color: var(--accent-secondary); 
+    padding: 6px 12px; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    font-family: var(--font-bengali); 
+    font-weight: 600; 
+    font-size: 0.85em; 
+    margin: 0 auto 15px auto; 
+    display: block; 
+    transition: all 0.3s ease; 
+    }
+    .details-toggle-btn:hover { background-color: var(--accent-secondary); color: var(--bg-dark); }
+    .details-toggle-btn .fas { margin-left: 6px; transition: transform 0.3s ease; }
+    .details-toggle-btn.active .fas { transform: rotate(180deg); }
+    .plan-more-details { 
+    max-height: 0; 
+    overflow: hidden; 
+    transition: max-height 0.4s ease-out, padding-top 0.4s ease-out, margin-top 0.4s ease-out; 
+    font-size: 0.85em; 
+    color: var(--text-secondary); 
+    font-family: var(--font-bengali); 
+    border-top: 1px dashed var(--border-color); 
+    margin-top: 0; 
+    padding-top: 0; 
+    }
+    .plan-more-details.show-details { max-height: 400px; margin-top: 15px; padding-top: 15px; }
+    .plan-more-details h4 { color: var(--accent-primary); font-size: 1em; margin-bottom: 8px; }
+    .plan-more-details ul { list-style-position: inside; padding-left: 3px; }
+    .plan-more-details ul li { margin-bottom: 6px; }
+    .subscribe-btn { 
+    display: block; 
+    width: 100%; 
+    padding: 15px; 
+    background: linear-gradient(45deg, var(--accent-tertiary), #ffae00); 
+    color: var(--bg-dark); 
+    border: none; 
+    border-radius: 10px; 
+    text-decoration: none; 
+    font-size: 1.1em; 
+    font-weight: 700; 
+    text-align: center; 
+    transition: all 0.3s ease; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25); 
+    background-size: 200% auto; 
+    margin-top: auto; 
+    cursor: pointer; 
+    font-family: var(--font-bengali); 
+    }
+    .subscribe-btn:hover { 
+    transform: translateY(-3px) scale(1.02); 
+    box-shadow: 0 6px 15px rgba(var(--accent-tertiary), 0.35); 
+    background-position: right center; 
+    }
+    footer { 
+    background-color: transparent; 
+    color: var(--text-secondary); 
+    text-align: center; 
+    padding: 20px 0; 
+    margin-top: 25px; 
+    }
+    footer p { font-size: 0.85em; font-family: var(--font-bengali); }
+    footer a { color: var(--accent-primary); text-decoration: none; font-weight: 500; }
+    footer a:hover { text-decoration: underline; text-shadow: 0 0 4px rgba(var(--accent-primary-rgb), 0.3); }
+    
+    .modal { 
+    display: none; 
+    position: fixed; 
+    z-index: 2000; 
+    left: 0; 
+    top: 0; 
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.7); 
+    backdrop-filter: blur(5px); 
+    align-items: center; 
+    justify-content: center; 
+    }
+    .modal-content { 
+    background-color: var(--bg-medium); 
+    margin: auto; 
+    padding: 25px; 
+    border: 1px solid var(--border-color); 
+    border-radius: 12px; 
+    width: 90%; 
+    max-width: 450px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+    position: relative; 
+    animation: fadeInModal 0.3s ease-out; 
+    font-family: var(--font-bengali); 
+    }
+    @keyframes fadeInModal { 
+    from { opacity: 0; transform: translateY(-20px) scale(0.97); } 
+    to { opacity: 1; transform: translateY(0) scale(1); } 
+    }
+    .close-btn { 
+    color: var(--text-secondary); 
+    position: absolute; 
+    top: 10px; 
+    right: 15px; 
+    font-size: 1.8em; 
+    font-weight: bold; 
+    transition: all 0.3s ease; 
+    }
+    .close-btn:hover, .close-btn:focus { color: var(--accent-primary); transform: rotate(90deg) scale(1.05); }
+    .modal-content h2 { 
+    color: var(--accent-primary); 
+    margin-bottom: 18px; 
+    font-size: 1.7em; 
+    text-align: center; 
+    font-weight: 700; 
+    }
+    .modal-content h2 i { margin-right: 10px; color: var(--accent-secondary); }
+    .modal-content p { margin-bottom: 14px; font-size: 0.95em; line-height: 1.6; }
+    
+    .payment-number-container { 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 8px; 
+    margin: 6px 0 10px 0; 
+    flex-wrap: wrap; 
+    }
+    .modal-content .payment-number { 
+    font-weight: 700; 
+    color: var(--accent-tertiary); 
+    font-size: 1.1em; 
+    background-color: var(--bg-light); 
+    padding: 8px 12px; 
+    border-radius: 6px; 
+    display: inline-block; 
+    border: 1px dashed var(--accent-tertiary); 
+    letter-spacing: 1px; 
+    margin: 0; 
+    }
+    .copy-btn { 
+    background-color: var(--accent-secondary); 
+    color: var(--bg-dark); 
+    border: none; 
+    padding: 7px 10px; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    font-size: 0.85em; 
+    font-weight: 600; 
+    transition: all 0.2s ease; 
+    font-family: var(--font-bengali); 
+    }
+    .copy-btn:hover { background-color: var(--accent-primary); }
+    .copy-btn i { margin-right: 4px; }
+    .copy-feedback { font-size: 0.75em; color: var(--success-color); margin-left: 8px; display: none; }
+    
+    .modal-content .form-group { margin-bottom: 18px; }
+    .modal-content label { display: block; margin-bottom: 6px; font-weight: 600; color: var(--text-primary); font-size: 1em; }
+    .modal-content input[type="text"] { 
+    width: 100%; 
+    padding: 12px; 
+    border: 1px solid var(--border-color); 
+    border-radius: 8px; 
+    background-color: var(--bg-dark); 
+    color: var(--text-primary); 
+    font-size: 0.95em; 
+    transition: all 0.3s ease; 
+    font-family: var(--font-primary); 
+    }
+    .modal-content input[type="text"]:focus { 
+    border-color: var(--accent-primary); 
+    box-shadow: 0 0 0 3px rgba(var(--accent-primary-rgb), 0.2); 
+    outline: none; 
+    }
+    
+    .submit-payment-btn { 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    width: 100%; 
+    padding: 14px; 
+    background: linear-gradient(45deg, var(--success-color), #27ae60); 
+    color: #fff; 
+    border: none; 
+    border-radius: 8px; 
+    font-size: 1em; 
+    font-weight: 600; 
+    cursor: pointer; 
+    transition: all 0.3s ease; 
+    font-family: var(--font-bengali); 
+    position: relative; 
+    }
+    .submit-payment-btn:hover { 
+    background: linear-gradient(45deg, #27ae60, var(--success-color)); 
+    transform: translateY(-2px); 
+    }
+    .submit-payment-btn:disabled { background: var(--bg-light); cursor: not-allowed; opacity: 0.7; }
+    .loader { 
+    border: 2px solid #f3f3f3; 
+    border-top: 2px solid var(--accent-primary); 
+    border-radius: 50%; 
+    width: 18px; 
+    height: 18px; 
+    animation: spin 1s linear infinite; 
+    margin-left: 8px; 
+    display: none; 
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    
+    @media (max-width: 768px) {
+    .subscription-hero h1 { font-size: 1.8em; }
+    .plan-name { font-size: 1.2em; }
+    .plan-price { font-size: 2.2em; }
+    .modal-content { width: 95%; padding: 20px 15px;}
+    }
+    
+    @media (max-width: 480px) {
+    body { padding: 12px; }
+    .subscription-hero { margin-bottom: 15px;}
+    .subscription-hero h1 { font-size: 1.6em; }
+    .subscription-hero p { font-size: 0.9em; }
+    .plan-card { padding: 20px 15px; }
+    .plan-name { font-size: 1.1em; }
+    .plan-price { font-size: 2em; }
+    .subscribe-btn { font-size: 1em; padding: 12px 15px;}
+    .details-toggle-btn { font-size: 0.8em; padding: 5px 10px; }
+    .plan-card::before { font-size: 0.75em; padding: 4px 25px; right: -35px; top: 10px; }
+    .modal-content { padding: 20px 12px;}
+    .modal-content h2 { font-size: 1.4em; }
+    .modal-content p { font-size: 0.9em; }
+    }
+    </style>
+</head>
+<body>
+    <main class="container">
+        
+
+        <section class="plan-card-wrapper">
+            <div class="plan-card">
+                <h2 class="plan-name">এক্সক্লুসিভ চা প্যাক</h2>
+                <p class="plan-price"><span class="currency">৳</span>১০<span class="period">/এককালীন</span></p>
+                <p class="plan-description"> সদ্য মুক্তি পাওয়া নতুন সকল মুভি গুলোর বাংলা ডাবিং পেয়ে যান মাত্র ১০ টাকায় এক মাসের অ্যাক্সেস। মাত্র একটি চায়ের দামে!🔥।</p>
+                <ul class="plan-features">
+                    <li class="included"><i class="fas fa-check-circle"></i> সম্পূর্ণ বিজ্ঞাপনমুক্ত </li>
+                    <li class="included"><i class="fas fa-check-circle"></i> এক ক্লিকে ডাউনলোড </li>
+                    <li class="included"><i class="fas fa-check-circle"></i> সকল মুভির বাংলা ডাবিং </li>
+                    <li class="included"><i class="fas fa-check-circle"></i> আনলিমিটেড মুভি কালেকশন  </li>
+                    
+                    <li class="included"><i class="fas fa-check-circle"></i> কোন একাউন্ট খুলতে হবে না আইপি এড্রেস চেক করে অ্যাক্সেস দেয়া হবে সাথে সাথে!  </li>
+                    
+                    <li class="included"><i class="fas fa-check-circle"></i> Animal,spiderman,avengers  টাইপ সকল ইন্ডিয়ান, হলিউড ও কোরিয়ান মুভির বাংলা ডাবিং </li>
+                    
+                </ul>
+
+                <button class="details-toggle-btn">
+                    বিস্তারিত দেখুন <i class="fas fa-chevron-down"></i>
+                </button>
+
+                <div class="plan-more-details">
+                    <h4>এই প্যাকে আপনি যা যা পাচ্ছেন:</h4>
+                    <ul>
+                        <li>স্পেশালি বাংলা ডাবিং এর জন্য সেরা সাইট 🔥</li>
+                        <li>সকল মুভি ডাউনলোড সুবিধা, এক মাসের ভিতর আর কোনো পে করতে হবে না। </li>
+                        <li>নতুন রিলিজ হওয়া সিনেমার বাংলা ডাবিং ভার্সন খুব দ্রুত পেয়ে যাবেন 🔥</li>
+                        <li>বাছাই করা এক্সক্লুসিভ কন্টেন্টের লাইব্রেরি।</li>
+                        <li>কোনো প্রকার হিডেন চার্জ নেই, এটি একটি এককালীন পেমেন্ট।</li>
+                        <li>তোমার ডিভাইসের আইপি এড্রেস এর মাধ্যমে অটো সিস্টেমে একাউন্ট খোলা হয়ে যাবে তাই তোমাকে কষ্ট করে আর একাউন্ট খোলার অসুবিধায় ভুগতে হবে না </li>
+                        <li>বাংলাদেশের কোন মুভি বা কনটেন্ট দেওয়া হবেনা। </li>
+                        <li>এক মাস পরপর সাবস্ক্রিপশন কিনতে হবে, ১০ টাকা খুবই সামান্য, এই বিশাল আনন্দ উপভোগ করার জন্য ১০ টাকা খরচ করতে কার্পণ্য করবেন না।  </li>
+                        
+                    </ul>
+                    <p style="margin-top: 15px;">এই অফারটি সীমিত সময়ের জন্য। স্টক থাকা পর্যন্ত এই মূল্যে প্যাকটি কিনতে পারবেন।</p>
+                </div>
+
+                <button class="subscribe-btn" data-plan="এক্সক্লুসিভ প্যাক" data-price="10">এখনই কিনুন</button>
+            </div>
+        </section>
+    </main>
+
+    
+
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">×</span>
+            <h2><i class="fas fa-wallet"></i> পেমেন্ট প্রক্রিয়া</h2>
+            <p>আপনার নির্বাচিত প্ল্যান: <strong id="modalPlanName"></strong></p>
+            <p>প্ল্যানের মূল্য: <strong id="modalPlanPrice"></strong> টাকা</p>
+            <hr style="border-color: var(--border-color); margin: 15px 0;">
+            <p>অনুগ্রহ করে নিচের বিকাশ/নগদ পার্সোনাল নম্বরে <strong id="modalSendPrice"></strong> টাকা Send Money করুন:</p>
+            
+            <div class="payment-number-container">
+                <span class="payment-number" id="paymentPhoneNumber">01913305107</span>
+                <button class="copy-btn" id="copyPhoneNumberBtn"><i class="fas fa-copy"></i> কপি করুন</button>
+                <span class="copy-feedback" id="copyFeedbackMessage">কপি করা হয়েছে!</span>
+            </div>
+
+            <p>Send Money সম্পন্ন হলে, নিচের বক্সে আপনার পেমেন্টের Transaction ID টি সঠিকভাবে লিখুন এবং সাবমিট করুন।</p>
+            
+            <form id="paymentForm">
+                <div class="form-group">
+                    <label for="transactionId">Transaction ID (ট্রানজেকশন আইডি):</label>
+                    <input type="text" id="transactionId" name="transactionId" placeholder="যেমন: 9A3B2C1D0E" required>
+                </div>
+                <button type="submit" class="submit-payment-btn" id="finalSubmitBtn">
+                    সাবমিট করুন
+                    <span class="loader" id="submitLoader"></span>
+                </button>
+            </form>
+            <p style="font-size: 0.85em; color: var(--text-secondary); margin-top: 20px; text-align: center;">
+                আপনার পেমেন্ট কমপ্লিট হওয়ার সাথে সাথেই সকল মুভি ডাউনলোডের এক্সেস পাবেন।   </p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+        import { getDatabase, ref, push, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+
+        // ============== গুরুত্বপূর্ণ: আপনার Firebase কনফিগারেশন এখানে আপডেট করুন ==============
+        const firebaseConfig = {
+        apiKey: "AIzaSyBsz-82MDaibWnIBUpoykrZHyJW7UMedX8",
+        authDomain: "movies-bee24.firebaseapp.com",
+        databaseURL: "https://movies-bee24-default-rtdb.firebaseio.com",
+        projectId: "movies-bee24",
+        storageBucket: "movies-bee24.appspot.com",
+        messagingSenderId: "1080659811750",
+        appId: "1:1080659811750:web:c1ef7d4dacc3ab17edc367"
+        };
+        // ==============================================================================
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Modal JavaScript
+        var modal = document.getElementById("paymentModal");
+        var subscribeButton = document.querySelector(".subscribe-btn"); 
+        var closeBtn = document.querySelector(".modal .close-btn");
+        var paymentForm = document.getElementById("paymentForm");
+        var finalSubmitButton = document.getElementById("finalSubmitBtn");
+        var submitLoader = document.getElementById("submitLoader");
+
+        var modalPlanNameEl = document.getElementById("modalPlanName");
+        var modalPlanPriceEl = document.getElementById("modalPlanPrice");
+        var modalSendPriceEl = document.getElementById("modalSendPrice");
+
+        subscribeButton.onclick = function() {
+            var planName = this.getAttribute("data-plan");
+            var planPrice = this.getAttribute("data-price");
+            
+            modalPlanNameEl.textContent = planName;
+            modalPlanPriceEl.textContent = planPrice;
+            modalSendPriceEl.textContent = planPrice;
+
+            modal.style.display = "flex";
+        }
+
+        closeBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Copy phone number button
+        const copyPhoneNumberBtn = document.getElementById('copyPhoneNumberBtn');
+        const paymentPhoneNumber = document.getElementById('paymentPhoneNumber').textContent;
+        const copyFeedbackMessage = document.getElementById('copyFeedbackMessage');
+
+        copyPhoneNumberBtn.addEventListener('click', function() {
+            navigator.clipboard.writeText(paymentPhoneNumber).then(function() {
+                copyFeedbackMessage.style.display = 'inline';
+                setTimeout(() => {
+                    copyFeedbackMessage.style.display = 'none';
+                }, 2000);
+            }, function(err) {
+                console.error('Async: Could not copy text: ', err);
+                alert('নম্বর কপি করা যায়নি। অনুগ্রহ করে ম্যানুয়ালি কপি করুন।');
+            });
+        });
+
+        // Function to get User IP
+        async function getUserIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                console.error("Error fetching IP: ", error);
+                return "Unavailable";
+            }
+        }
+
+        paymentForm.onsubmit = async function(event) {
+            event.preventDefault(); 
+            var transactionIdInput = document.getElementById("transactionId");
+            var transactionId = transactionIdInput.value.trim();
+            
+            if (transactionId === "") {
+                alert("অনুগ্রহ করে ট্রানজেকশন আইডি দিন।");
+                transactionIdInput.focus();
+                return;
+            }
+
+            finalSubmitButton.disabled = true;
+            submitLoader.style.display = "inline-block";
+
+            const userIP = await getUserIP();
+            const planName = modalPlanNameEl.textContent; 
+            
+            // Get price from the button's data-price attribute to ensure it's a clean number string
+            const planPriceString = subscribeButton.getAttribute("data-price");
+            const priceAsNumber = parseFloat(planPriceString);
+
+            if (isNaN(priceAsNumber)) {
+                console.error("Error: planPrice is NaN. Value obtained from data-price was: ", planPriceString);
+                alert("প্ল্যানের মূল্য সঠিকভাবে পাওয়া যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।");
+                finalSubmitButton.disabled = false;
+                submitLoader.style.display = "none";
+                return;
+            }
+
+            const transactionData = {
+                planName: planName,
+                price: priceAsNumber, // Use the correctly parsed number
+                transactionId: transactionId,
+                ipAddress: userIP,
+                timestamp: serverTimestamp(), 
+                status: "pending" 
+            };
+
+            try {
+                const transactionsRef = ref(database, 'transactions');
+                await push(transactionsRef, transactionData); 
+
+                alert(`আপনার "${planName}" (${priceAsNumber} টাকা) এর জন্য ট্রানজেকশন আইডি "${transactionId}" সফলভাবে জমা দেওয়া হয়েছে। অনুমোদনের জন্য অপেক্ষা করুন।`);
+                modal.style.display = "none";
+                paymentForm.reset();
+                window.location.href = "home.html"; 
+
+            } catch (error) {
+                console.error("Error saving transaction to Firebase: ", error);
+                alert("দুঃখিত, আপনার ট্রানজেকশন জমা দেওয়া যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।");
+            } finally {
+                finalSubmitButton.disabled = false;
+                submitLoader.style.display = "none";
+            }
+        }
+
+        // Details toggle JavaScript
+        const detailsToggleButton = document.querySelector('.details-toggle-btn');
+        const moreDetailsSection = document.querySelector('.plan-more-details');
+
+        if (detailsToggleButton && moreDetailsSection) {
+            detailsToggleButton.addEventListener('click', function() {
+                moreDetailsSection.classList.toggle('show-details');
+                this.classList.toggle('active'); 
+
+                if (moreDetailsSection.classList.contains('show-details')) {
+                    this.innerHTML = 'কম দেখুন <i class="fas fa-chevron-up"></i>';
+                } else {
+                    this.innerHTML = 'বিস্তারিত দেখুন <i class="fas fa-chevron-down"></i>';
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
