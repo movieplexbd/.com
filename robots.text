@@ -1,4 +1,5 @@
 User-agent: *
-Allow: /
-Disallow: /*
+Allow: /$
+Disallow: /
+
 Sitemap: https://movieplexbd.xyz/sitemap.xml
