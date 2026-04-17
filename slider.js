@@ -18,7 +18,7 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 // DOM Elements
-const slidesRef = ref(db, 'slides');
+const slidesRef = ref(db, 'banners');
 const slider = document.getElementById('slider');
 const dotsContainer = document.getElementById('dots');
 
@@ -40,7 +40,7 @@ function loadSlides() {
             slideElement.className = 'slide';
             slideElement.innerHTML = `
                 <a href="${slide.link}">
-                    <img src="${slide.imageURL}" alt="${slide.title}">
+                    <img src="${slide.imageUrl || slide.imageURL}" alt="${slide.title}">
                     <div class="slide-info">${slide.title}</div>
                 </a>
             `;

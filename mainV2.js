@@ -77,19 +77,19 @@ function renderMovies() {
         movieCard.setAttribute('data-category', movie.category); // movie.category এর মান অনুসারে category দেখাবে
 
         const movieImage = document.createElement('img');
-        movieImage.src = movie.fileURL;
-        movieImage.alt = movie.name;
+        movieImage.src = movie.bannerImageUrl || movie.fileURL;
+        movieImage.alt = movie.title || movie.name;
         movieImage.addEventListener('click', () => {
             showModal(movie);
         });
 
         const movieInfo = document.createElement('div');
         movieInfo.className = 'movie-info';
-        movieInfo.innerHTML = `<h5>${movie.name} (${movie.year})</h5>`;
+        movieInfo.innerHTML = `<h5>${movie.title || movie.name} (${movie.year})</h5>`;
 
         const downloadLink = document.createElement('a');
         downloadLink.textContent = "Download";
-        downloadLink.href = `movie-detail.html?name=${encodeURIComponent(movie.name)}`;
+        downloadLink.href = `movie-detail.html?id=${movie.id || movie.movieId}&name=${encodeURIComponent(movie.title || movie.name)}`;
         downloadLink.target = "_self";
 
         movieInfo.appendChild(downloadLink);
@@ -130,7 +130,7 @@ function showModal(movie) {
     const modalTitle = document.getElementById('modal-title');
     const modalDescription = document.getElementById('modal-description');
 
-    modalTitle.textContent = movie.name;
+    modalTitle.textContent = movie.title || movie.name;
     modalDescription.textContent = movie.description;
 
     modal.style.display = 'block'; // Show the modal
@@ -150,7 +150,7 @@ searchInput.addEventListener('input', function() {
 function filterMoviesBySearch(query) {
     // Filter movies based on search query
     const filteredMovies = allMovies.filter(movie => {
-        return movie.name.toLowerCase().includes(query); // Search in movie name
+        return (movie.title || movie.name).toLowerCase().includes(query); // Search in movie name
     });
 
     // Reset pagination to show filtered results
@@ -175,19 +175,19 @@ function renderFilteredMovies(filteredMovies) {
         movieCard.setAttribute('data-category', movie.category);
 
         const movieImage = document.createElement('img');
-        movieImage.src = movie.fileURL;
-        movieImage.alt = movie.name;
+        movieImage.src = movie.bannerImageUrl || movie.fileURL;
+        movieImage.alt = movie.title || movie.name;
         movieImage.addEventListener('click', () => {
             showModal(movie);
         });
 
         const movieInfo = document.createElement('div');
         movieInfo.className = 'movie-info';
-        movieInfo.innerHTML = `<h5>${movie.name} (${movie.year})</h5>`;
+        movieInfo.innerHTML = `<h5>${movie.title || movie.name} (${movie.year})</h5>`;
 
         const downloadLink = document.createElement('a');
         downloadLink.textContent = "Download";
-        downloadLink.href = `movie-detail.html?name=${encodeURIComponent(movie.name)}`;
+        downloadLink.href = `movie-detail.html?id=${movie.id || movie.movieId}&name=${encodeURIComponent(movie.title || movie.name)}`;
         downloadLink.target = "_self";
 
         movieInfo.appendChild(downloadLink);

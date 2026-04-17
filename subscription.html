@@ -515,16 +515,15 @@
             }
 
             const transactionData = {
-                planName: planName,
-                price: priceAsNumber, // Use the correctly parsed number
                 transactionId: transactionId,
-                ipAddress: userIP,
-                timestamp: serverTimestamp(), 
-                status: "pending" 
+                deviceId: userIP,
+                status: "PENDING",
+                submittedAt: Date.now(),
+                expiry: Date.now() + (30 * 24 * 60 * 60 * 1000) // Default 30 days for now
             };
 
             try {
-                const transactionsRef = ref(database, 'transactions');
+                const transactionsRef = ref(database, 'subscriptions');
                 await push(transactionsRef, transactionData); 
 
                 alert(`আপনার "${planName}" (${priceAsNumber} টাকা) এর জন্য ট্রানজেকশন আইডি "${transactionId}" সফলভাবে জমা দেওয়া হয়েছে। অনুমোদনের জন্য অপেক্ষা করুন।`);

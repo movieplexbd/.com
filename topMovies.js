@@ -18,7 +18,7 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 // DOM Elements
-const topMoviesRef = ref(db, 'top_movies');  // Assuming 'top_movies' node stores top movies data
+const topMoviesRef = ref(db, 'banners');  // Assuming 'top_movies' node stores top movies data
 const topMoviesList = document.getElementById('topMoviesCarousel');
 
 // Fetch and Display Top Movies
@@ -32,7 +32,7 @@ onValue(topMoviesRef, (snapshot) => {
             const movieCard = document.createElement('div');
             movieCard.className = 'movie-card3';
             movieCard.innerHTML = `
-                <a href="${movie.downloadUrl}" target="_blank">
+                <a href="movie-detail.html?id=${movie.movieId}&name=${encodeURIComponent(movie.title)}">
                     <img src="${movie.imageUrl}" alt="${movie.title}">
                 </a>
                 <div class="card-body">

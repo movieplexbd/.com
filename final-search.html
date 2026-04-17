@@ -299,9 +299,9 @@
                 allMovies = []; 
                 snapshot.forEach((childSnapshot) => {
                     const movie = childSnapshot.val();
-                    if (movie && movie.name) { 
-                       allMovies.push(movie);
-                    }
+if (movie && (movie.title || movie.name)) { 
+	                       allMovies.push(movie);
+	                    }
                 });
             });
         }
@@ -333,9 +333,9 @@
             suggestionsToShow.forEach(movie => {
                 const item = document.createElement('div');
                 item.classList.add('suggestion-item');
-                item.innerHTML = highlightSearchTerm(movie.name, query); // Use innerHTML for strong tag
-                item.addEventListener('click', () => {
-                    searchBar.value = movie.name; 
+item.innerHTML = highlightSearchTerm(movie.title || movie.name, query); // Use innerHTML for strong tag
+	                item.addEventListener('click', () => {
+	                    searchBar.value = movie.title || movie.name;
                     hideSuggestions();
                     performSearch(); 
                 });
@@ -363,9 +363,9 @@
                 return;
             }
 
-            const filteredSuggestions = allMovies.filter(movie => 
-                movie.name.toLowerCase().includes(query)
-            );
+const filteredSuggestions = allMovies.filter(movie => 
+	                (movie.title || movie.name).toLowerCase().includes(query)
+	            );
             showSuggestions(filteredSuggestions);
         };
 
@@ -427,9 +427,9 @@
                  return;
             }
 
-            const filteredMovies = allMovies.filter(movie => {
-                return movie.name.toLowerCase().includes(searchQuery);
-            });
+const filteredMovies = allMovies.filter(movie => {
+	                return (movie.title || movie.name).toLowerCase().includes(searchQuery);
+	            });
 
             if (filteredMovies.length === 0) {
                 movieListContainer.innerHTML = `<p style="text-align:center; width:100%;">দুঃখিত, "${searchBar.value}" নামের কোনো মুভি খুঁজে পাওয়া যায়নি।<br><br>সঠিক বানানে পুরো নামটি লিখুন। গুগল থেকে মুভির সঠিক নামটি জেনে নিতে পারেন।</p>`;
@@ -441,8 +441,8 @@
                 movieCard.className = 'movie-card';
 
                 const movieImage = document.createElement('img');
-                movieImage.src = movie.fileURL; 
-                movieImage.alt = movie.name;
+movieImage.src = movie.bannerImageUrl || movie.fileURL; 
+	                movieImage.alt = movie.title || movie.name;
                 movieImage.loading = "lazy"; // Lazy loading for images
                 movieImage.onerror = function() { 
                     this.alt = 'ছবি পাওয়া যায়নি';
@@ -451,7 +451,7 @@
 
                 const movieInfo = document.createElement('div');
                 movieInfo.className = 'movie-info';
-                movieInfo.innerHTML = `<h3>${movie.name} (${movie.year || 'N/A'})</h3>`;
+                movieInfo.innerHTML = `<h3>${movie.title || movie.name} (${movie.year || 'N/A'})</h3>`;
 
                 const categoryLabel = document.createElement('span');
                 categoryLabel.className = `category-label ${(movie.category || 'others').toLowerCase()}`;
@@ -459,7 +459,7 @@
 
                 const downloadLink = document.createElement('a');
                 downloadLink.textContent = "ডাউনলোড করুন";
-                downloadLink.href = movie.downloadLink; 
+                downloadLink.href = `movie-detail.html?id=${movie.id || movie.movieId}&name=${encodeURIComponent(movie.title || movie.name)}`; 
                 downloadLink.className = 'download-btn';
                 downloadLink.target = "_blank"; 
 

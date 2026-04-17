@@ -327,18 +327,18 @@
 
         async function renderMovieDetails(movie) { 
             const container = document.getElementById('movie-detail-container');
-            const posterUrl = movie.fileURL || 'https://via.placeholder.com/280x420.png?text=No+Poster';
+            const posterUrl = movie.detailThumbnailUrl || movie.fileURL || 'https://via.placeholder.com/280x420.png?text=No+Poster';
             
-            document.title = `${movie.name || 'Movie'} - Details`;
+            document.title = `${movie.title || movie.name || 'Movie'} - Details`;
 
             container.innerHTML = `
                 <div class="movie-content-wrapper">
                     <div class="movie-poster-section">
-                        <img src="${posterUrl}" alt="${movie.name || 'Movie'} Poster" loading="lazy">
+                        <img src="${posterUrl}" alt="${movie.title || movie.name || 'Movie'} Poster" loading="lazy">
                     </div>
                     <div class="movie-main-details-wrapper">
                         <div class="movie-info-section">
-                            <h2 class="movie-title">${movie.name || 'Untitled Movie'}</h2>
+                            <h2 class="movie-title">${movie.title || movie.name || 'Untitled Movie'}</h2>
                             <p class="movie-year"><strong>বছর:</strong> ${movie.year || 'N/A'}</p>
                          <div id="downloadActionArea"> <!-- For actual download button or status related to download -->
                                 <p id="downloadStatusMessage" style="font-size: 0.9em; color: var(--text-secondary); margin-top: 8px;">
@@ -404,7 +404,7 @@
             const downloadActionArea = document.getElementById('downloadActionArea');
             const subscriptionNoticeContainer = document.getElementById('subscriptionNoticeContainer'); // Get new container
             const initialStatusMessage = downloadActionArea.querySelector('#downloadStatusMessage');
-            const originalDownloadLink = movie.downloadLink || '#';
+            const originalDownloadLink = movie.downloadUrl || movie.downloadLink || '#';
 
             const currentUserIP = await getUserIP();
 
@@ -426,8 +426,8 @@
                 return; 
             }
 
-            const transactionsRef = ref(db, 'transactions');
-            const ipQuery = query(transactionsRef, orderByChild('ipAddress'), equalTo(currentUserIP));
+            const transactionsRef = ref(db, 'subscriptions');
+            const ipQuery = query(transactionsRef, orderByChild('deviceId'), equalTo(currentUserIP));
             
             onValue(ipQuery, (snapshot) => {
                 if(initialStatusMessage) initialStatusMessage.style.display = 'none'; 
@@ -442,11 +442,11 @@
                 if (snapshot.exists()) {
                     snapshot.forEach((childSnapshot) => {
                         const transaction = childSnapshot.val();
-                        if (transaction.status === 'approved') {
+                        if (transaction.status === 'APPROVED') {
                             hasApprovedSubscription = true;
-                        } else if (transaction.status === 'pending') {
+                        } else if (transaction.status === 'PENDING') {
                             hasPendingSubscription = true;
-                        } else if (transaction.status === 'rejected') {
+                        } else if (transaction.status === 'REJECTED') {
                             isRejected = true;
                         }
                     });
@@ -500,6 +500,7 @@
         
         function getMovieDetails() {
             const urlParams = new URLSearchParams(window.location.search);
+            const movieId = urlParams.get('id');
             const movieName = urlParams.get('name');
             const container = document.getElementById('movie-detail-container');
             const newMoviesSection = document.getElementById('new-movies-section');
@@ -523,7 +524,7 @@
                     const movie = childSnapshot.val();
                     if(movie && movie.name) { 
                         allMoviesData.push(movie);
-                        if (movie.name.trim().toLowerCase() === decodeURIComponent(movieName).trim().toLowerCase()) {
+                        if ((movieId && (movie.id === movieId || movie.movieId === movieId)) || (movie.name && movie.name.trim().toLowerCase() === decodeURIComponent(movieName).trim().toLowerCase())) {
                             currentMovieData = movie;
                             movieFound = true;
                         }
@@ -563,8 +564,8 @@
 
             movies.forEach(movie => {
                 if (movie && movie.name) { 
-                    const posterUrl = movie.fileURL || 'https://via.placeholder.com/160x240.png?text=No+Poster'; 
-                    const detailPageUrl = `movie-detail.html?name=${encodeURIComponent(movie.name)}`;
+                    const posterUrl = movie.detailThumbnailUrl || movie.fileURL || 'https://via.placeholder.com/160x240.png?text=No+Poster'; 
+                    const detailPageUrl = `movie-detail.html?id=${movie.id || movie.movieId}&name=${encodeURIComponent(movie.title || movie.name)}`;
                     
                     htmlContent += `
                         <a href="${detailPageUrl}" class="new-movie-item">
