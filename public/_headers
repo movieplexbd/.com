@@ -1,0 +1,27 @@
+# Netlify edge headers — improve SEO trust + caching.
+# Helps Google "index once, cache long" by sending strong validators.
+
+/*
+  X-Robots-Tag: index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Content-Type-Options: nosniff
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+# Long cache for static immutable assets — fingerprinted by Vite.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Sitemap and robots — short cache so updates propagate quickly.
+/sitemap.xml
+  Content-Type: application/xml; charset=utf-8
+  Cache-Control: public, max-age=3600
+
+/robots.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=3600
+
+# SPA HTML — never cache so updates show immediately.
+/
+  Cache-Control: public, max-age=0, must-revalidate
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate

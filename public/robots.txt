@@ -1,0 +1,58 @@
+# MOVIEPLEXBD — robots.txt
+# Allow all well-behaved crawlers; block private/auth/admin routes
+# from being indexed. Sitemap below tells Google what TO index.
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /login
+Disallow: /lock/
+Disallow: /subscribe
+Disallow: /watch/
+Disallow: /profile
+
+# Search results pages should not be indexed (thin / duplicate content).
+Disallow: /search
+Disallow: /*?*
+
+# Polite crawl delay for misc bots (Google ignores this — that's fine).
+Crawl-delay: 5
+
+# Block known scraper / AI-training bots that don't respect bandwidth.
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+# Sitemap
+Sitemap: https://movieplexbd.netlify.app/sitemap.xml
+Host: https://movieplexbd.netlify.app
